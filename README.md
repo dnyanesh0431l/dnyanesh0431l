@@ -1,84 +1,105 @@
-# Hi, I'm Dnyaneshwar Ingle 👋
+# Dnyaneshwar Ingle
 
-🚀 **Software Developer | Founder @ Bytesolve | Flutter & Full-Stack Engineer**
+**Founder @ Bytesolve | Product Engineer | Flutter · Next.js · Firebase · Electron**
 
-I’m a passionate software developer from India, focused on building **scalable, reliable, and business-driven digital products**.  
-From mobile apps to full-stack platforms, I specialize in turning ideas into production-ready solutions.
+I build **real software for real businesses**.  
+Not demos. Not tutorials. **Production-grade products**.
 
----
-
-## 🧠 About Me
-
-- 🎓 Diploma Engineer (3rd Year, 5th Semester)
-- 🧑‍💻 Strong experience with **Flutter, Firebase, Next.js, React & Node.js**
-- 🏗️ Building real-world products for **Indian SMBs**
-- 🧠 Problem-solver with a product & business mindset
-- 🔥 Founder of **Bytesolve** – software solutions for restaurants, salons & small businesses
+From mobile apps to desktop software and admin platforms,  
+I focus on **clean architecture, scalability, and long-term value**.
 
 ---
 
-## 🛠️ Tech Stack
+## Who I Am
 
-**Frontend**
+- 🇮🇳 Software Developer from India
+- 🎓 Diploma Engineer (Final Year)
+- 🧠 Strong product & business mindset
+- 🏗️ Founder of **Bytesolve**
+- 🚀 Building software for Indian SMBs
+
+I don’t just write code —  
+I **design systems**, **ship products**, and **solve business problems**.
+
+---
+
+## What I Specialize In
+
+### Product Development
+- End-to-end app & platform development
+- Admin panels, dashboards & role-based systems
+- Business-focused workflows (orders, users, inventory, content)
+
+### Platforms
+- 📱 Mobile Apps (Flutter)
+- 🌐 Web Apps (Next.js / React)
+- 🖥️ Desktop Apps (Electron)
+
+---
+
+## Tech Stack
+
+**Frontend & UI**
 - Flutter (Android / iOS)
-- React.js / Next.js
-- HTML, CSS, Tailwind, Bootstrap
+- Next.js / React
+- Tailwind CSS, Bootstrap
 
-**Backend**
-- Node.js, Express
-- Firebase (Auth, Firestore, Storage)
-- REST APIs
+**Desktop**
+- Electron.js
 
-**Database**
-- Firestore
-- PostgreSQL
+**Backend & Services**
+- Firebase Authentication
+- Firestore Database
+- Firebase Storage
 
-**Tools & Platforms**
+**Tools**
 - Git & GitHub
 - Firebase Console
 - Vercel
 - Cloudflare
-- Figma (basic UI/UX)
+- Figma (UI planning)
 
 ---
 
-## 💼 What I Build
+## Bytesolve
 
-- 📱 **Mobile Apps** (Flutter)
-- 🌐 **Web Applications** (Next.js / React)
-- 🧾 **Admin Panels & Dashboards**
-- 🔐 **Authentication & Role-Based Systems**
-- 🛒 **E-commerce & Business Software**
-- 📊 **Custom Software for SMBs**
+**Bytesolve** is my software venture focused on  
+**simple, reliable & affordable products for Indian businesses**.
 
----
-
-## 🏢 Bytesolve Vision
-
-> *Building simple, reliable & affordable software for Indian businesses.*
-
-Products & ideas I’m working on:
+### What I’m Building
 - Restaurant Management Software
 - Salon & Service Business Software
-- E-commerce & Admin Systems
-- Custom Web & App Solutions
+- Admin Panels & Internal Tools
+- Custom Web, App & Desktop Solutions
+
+Vision is simple:
+> Build once. Scale properly. Support long-term.
 
 ---
 
-## 📌 Current Focus
+## Current Focus
 
-- Scaling **Bytesolve products**
-- Writing cleaner, production-grade code
-- Improving system architecture & security
-- Building long-term, maintainable software
+- Scaling Bytesolve products
+- Improving architecture & performance
+- Writing cleaner, maintainable code
+- Shipping fewer but **high-quality** products
 
 ---
 
-## 📫 Connect With Me
+## Work Philosophy
+
+- Clean code > fast code
+- Architecture before features
+- UI matters as much as logic
+- Software should **earn money or save time**
+
+---
+
+## Contact
 
 - 📧 Email: **contact@bytesolvesolutions.in**
-- 💼 GitHub: [@dnyanesh0431l](https://github.com/dnyanesh0431l)
+- 💻 GitHub: https://github.com/dnyanesh0431l
 
 ---
 
-⭐ *“Code is not just about syntax — it’s about solving real problems.”*
+**I build software that businesses can actually run on.**
