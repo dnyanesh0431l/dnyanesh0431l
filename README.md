@@ -13,7 +13,6 @@ I focus on **clean architecture, reliability, and long-term maintainability**.
 ## Who I Am
 
 - 🇮🇳 Software Engineer from India
-- 🎓 Diploma Engineer (Final Year)
 - 🧠 Strong engineering + business mindset
 - 🏗️ Founder of **Bytesolve**
 - 🤝 Working with clients as a **long-term tech partner**
