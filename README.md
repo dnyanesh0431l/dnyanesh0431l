@@ -1,6 +1,6 @@
 # Dnyaneshwar Ingle
 
-**Founder @ Bytesolve | Software Engineer | Flutter · Next.js · Firebase · Electron**
+**Founder @ Bytesolve | Software Engineer | Next.js · Firebase · Electron**
 
 I build **production-grade software for growing businesses and agencies**.  
 Not experiments. Not tutorials. **Systems that scale and sustain.**
