@@ -315,7 +315,6 @@ export default function Header() {
               width={34}
               height={34}
               style={{
-                borderRadius: "var(--radius-sm)",
                 objectFit: "cover",
               }}
               className="rounded rounded-lg"
