@@ -318,6 +318,7 @@ export default function Header() {
                 borderRadius: "var(--radius-sm)",
                 objectFit: "cover",
               }}
+              className="rounded rounded-lg"
             />
             <div>
               <div
