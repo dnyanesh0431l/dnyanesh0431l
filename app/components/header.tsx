@@ -281,7 +281,7 @@ export default function Header() {
           borderBottom: "1px solid rgba(0, 229, 255, 0.10)",
           transition: "background 0.3s, box-shadow 0.3s",
           boxShadow: scrolled
-            ? "0 var(--space-md) var(--space-2xl) rgba(0,0,0,0.4)"
+            ? "0 var(--space-md) var(--space-2xl) rgba(0,0,0,0.2)"
             : "none",
         }}
       >
