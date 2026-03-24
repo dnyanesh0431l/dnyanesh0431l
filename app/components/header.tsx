@@ -68,7 +68,6 @@ function Dropdown({
     >
       <button
         style={{
-          background: "none",
           border: "none",
           cursor: "pointer",
           display: "flex",
