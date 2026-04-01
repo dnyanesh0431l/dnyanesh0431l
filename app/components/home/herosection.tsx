@@ -1,11 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [videoSrc, setVideoSrc] = useState("/video/hero-bg.mp4");
 
+  // Switch video based on screen width
+  useEffect(() => {
+    const updateVideo = () => {
+      if (window.innerWidth >= 1024) {
+        setVideoSrc("/video/hero-bgbg.mp4");
+      } else {
+        setVideoSrc("/video/hero-bg.mp4");
+      }
+    };
+
+    updateVideo();
+    window.addEventListener("resize", updateVideo);
+    return () => window.removeEventListener("resize", updateVideo);
+  }, []);
+
+  // Entrance animation for content
   useEffect(() => {
     if (heroRef.current) {
       heroRef.current.style.opacity = "0";
@@ -33,39 +50,10 @@ export default function Hero() {
         justifyContent: "center",
         padding: "var(--space-2xl) var(--space-lg)",
         overflow: "hidden",
-        background: "var(--charcoal)", // fallback dark color
+        background: "var(--charcoal)",
       }}
     >
-      {/* Background video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      >
-        <source src="/video/hero-bg.mp4" type="video/mp4" />
-        {/* Fallback image if video fails */}
-        <img
-          src="/images/hero-fallback.jpg"
-          alt="background"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
-      </video>
-
-      {/* Dark overlay to improve text readability */}
+      {/* Video container */}
       <div
         style={{
           position: "absolute",
@@ -73,7 +61,41 @@ export default function Hero() {
           left: 0,
           width: "100%",
           height: "100%",
-          background: "rgba(0, 0, 0, 0.5)", // dark overlay
+          zIndex: 0,
+          background: "var(--charcoal)",
+        }}
+      >
+        <video
+          key={videoSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-video"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            height: "100%",
+            objectFit: "contain", // default (mobile)
+            background: "var(--charcoal)",
+          }}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Dark overlay for text readability */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0, 0, 0, 0.5)",
           zIndex: 1,
         }}
       />
@@ -93,7 +115,7 @@ export default function Hero() {
           zIndex: 2,
         }}
       >
-        {/* Greeting / badge */}
+        {/* Badge */}
         <div
           style={{
             display: "inline-flex",
@@ -123,25 +145,25 @@ export default function Hero() {
           Available for freelance
         </div>
 
-        {/* Main heading: your name */}
+        {/* Main heading */}
         <h1
           style={{
             fontSize: "clamp(48px, 10vw, 96px)",
             lineHeight: 1.1,
             maxWidth: 900,
             margin: 0,
-            color: "var(--snow)", // bright white
+            color: "var(--snow)",
             fontWeight: 700,
           }}
         >
           Dnyaneshwar Ingle
         </h1>
 
-        {/* Subheading / tagline */}
+        {/* Tagline */}
         <p
           style={{
             fontSize: "clamp(18px, 4vw, 24px)",
-            color: "var(--snow-soft)", // soft white
+            color: "var(--snow-soft)",
             maxWidth: 600,
             margin: "0 auto",
             opacity: 0.95,
@@ -193,7 +215,7 @@ export default function Hero() {
               padding: "var(--space-md) var(--space-xl)",
               borderRadius: "var(--radius-sm)",
               background: "var(--cyan)",
-              color: "var(--charcoal)", // dark text for contrast
+              color: "var(--charcoal)",
               fontSize: "var(--text-sm)",
               fontFamily: "var(--font-heading)",
               letterSpacing: "1px",
@@ -216,7 +238,7 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* Optional: social proof / scroll hint */}
+        {/* Optional: social proof */}
         <div
           style={{
             marginTop: "var(--space-2xl)",
@@ -245,7 +267,6 @@ export default function Hero() {
               opacity: 0.6,
             }}
           >
-            {/* Replace with actual logos or remove */}
             {["Brand A", "Brand B", "Brand C"].map((brand) => (
               <span
                 key={brand}
@@ -262,7 +283,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Inline keyframes for animations */}
+      {/* Inline keyframes + responsive video styles */}
       <style jsx>{`
         @keyframes pulse {
           0%,
@@ -282,6 +303,20 @@ export default function Hero() {
           }
           50% {
             box-shadow: 0 0 0 8px rgba(0, 229, 255, 0);
+          }
+        }
+
+        /* Large screens (≥1024px): video fills whole screen */
+        @media (min-width: 1024px) {
+          .hero-video {
+            object-fit: cover !important;
+          }
+        }
+
+        /* Smaller screens: keep full landscape (letterbox) */
+        @media (max-width: 1023px) {
+          .hero-video {
+            object-fit: contain !important;
           }
         }
       `}</style>
