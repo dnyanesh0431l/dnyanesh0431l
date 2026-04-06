@@ -210,7 +210,7 @@ export default function Hero() {
           </Link>
 
           <Link
-            href="/contact"
+            href="/about"
             style={{
               padding: "var(--space-md) var(--space-xl)",
               borderRadius: "var(--radius-sm)",

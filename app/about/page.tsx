@@ -158,16 +158,16 @@ export default function AboutPage() {
             <div
               style={{
                 position: "relative",
-                width: "100%",
+                width: "80%",
                 aspectRatio: "1 / 1",
                 borderRadius: "var(--radius-lg)",
                 overflow: "hidden",
-                boxShadow: "0 20px 30px -10px rgba(0,0,0,0.1)",
               }}
             >
               <Image
-                src="/Assets/developer.jpg"
+                src="/Assets/dp.jpg"
                 alt="Dnyaneshwar Ingle"
+                className="w-full h-full rounded rounded-full"
                 fill
                 style={{ objectFit: "cover" }}
               />
@@ -460,14 +460,14 @@ export default function AboutPage() {
             }}
           >
             {[
-              { name: "Next.js", icon: "/icons/nextjs.svg" },
-              { name: "React", icon: "/icons/react.svg" },
-              { name: "Node.js", icon: "/icons/nodejs.svg" },
-              { name: "PostgreSQL", icon: "/icons/postgres.svg" },
-              { name: "Firebase", icon: "/icons/firebase.svg" },
-              { name: "Tailwind CSS", icon: "/icons/tailwind.svg" },
-              { name: "TypeScript", icon: "/icons/typescript.svg" },
-              { name: "Figma", icon: "/icons/figma.svg" },
+              { name: "Next.js", icon: "https://i.pinimg.com/736x/e3/82/52/e3825274a94bafc3f0282cae29c19972.jpg" },
+              { name: "React", icon: "https://i.pinimg.com/736x/82/40/ac/8240ac872c818d2a39ef20d819fdbf0d.jpg" },
+              { name: "Node.js", icon: "https://i.pinimg.com/736x/99/49/77/994977c48fde58ac674a2d05ba5a5efb.jpg" },
+              { name: "PostgreSQL", icon: "https://i.pinimg.com/1200x/dd/bd/aa/ddbdaa71dd2e6bd36ca4f9ff5acc2195.jpg" },
+              { name: "Firebase", icon: "https://i.pinimg.com/736x/5f/29/51/5f2951065f54f6a905274fd4003320ae.jpg" },
+              { name: "Tailwind CSS", icon: "https://i.pinimg.com/1200x/29/fc/03/29fc03e2bf4bc4776220d288b822cfab.jpg" },
+              { name: "TypeScript", icon: "https://i.pinimg.com/1200x/af/d8/3d/afd83d45d296a779bf0f6e3b945c4812.jpg" },
+              { name: "Flutter", icon: "https://i.pinimg.com/736x/94/10/10/941010726f1082d9d84ed65a06ad6509.jpg" },
             ].map((tech) => (
               <div key={tech.name} style={{ padding: "var(--space-md)" }}>
                 <div

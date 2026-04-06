@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import Header from "./components/header";
+import Footer from "./components/footer";
 import "./globals.css";
 export const metadata: Metadata = {
   title: "Dnyaneshwar Ingle - Best Freelancer in India",
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
