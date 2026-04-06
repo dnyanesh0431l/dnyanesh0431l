@@ -231,6 +231,207 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ByteSolve & Wealthy Psyche Section */}
+      <section
+        style={{
+          background: "#f8fafc", // subtle light gray
+          padding: "var(--space-2xl) var(--space-lg)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "clamp(1.5rem, 4vw, 2rem)",
+              fontFamily: "var(--font-heading)",
+              marginBottom: "var(--space-lg)",
+              color: "var(--charcoal)",
+            }}
+          >
+            My Ventures
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "var(--space-xl)",
+              marginTop: "var(--space-xl)",
+            }}
+          >
+            {/* ByteSolve Solutions */}
+            <div
+              style={{
+                background: "var(--snow)",
+                borderRadius: "var(--radius-lg)",
+                padding: "var(--space-xl)",
+                boxShadow: "0 10px 20px rgba(0,0,0,0.05)",
+                transition: "transform 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "translateY(-4px)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "translateY(0)")
+              }
+            >
+              <div
+                style={{
+                  width: 60,
+                  height: 60,
+                  margin: "0 auto var(--space-md)",
+                  background: "linear-gradient(135deg, var(--cyan), var(--green))",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              </div>
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontFamily: "var(--font-heading)",
+                  marginBottom: "var(--space-sm)",
+                  color: "var(--charcoal)",
+                }}
+              >
+                ByteSolve Solutions
+              </h3>
+              <p
+                style={{
+                  color: "var(--charcoal-soft)",
+                  fontSize: "var(--text-sm)",
+                  marginBottom: "var(--space-md)",
+                }}
+              >
+                A software development firm delivering custom web applications,
+                white‑label solutions, and business‑critical systems.
+              </p>
+              <Link
+                href="https://bytesolvesolutions.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "var(--space-xs)",
+                  color: "var(--cyan)",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--green)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--cyan)")
+                }
+              >
+                Visit Site →
+              </Link>
+            </div>
+
+            {/* Wealthy Psyche */}
+            <div
+              style={{
+                background: "var(--snow)",
+                borderRadius: "var(--radius-lg)",
+                padding: "var(--space-xl)",
+                boxShadow: "0 10px 20px rgba(0,0,0,0.05)",
+                transition: "transform 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "translateY(-4px)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "translateY(0)")
+              }
+            >
+              <div
+                style={{
+                  width: 60,
+                  height: 60,
+                  margin: "0 auto var(--space-md)",
+                  background: "linear-gradient(135deg, #9b59b6, #e74c3c)",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <path d="M12 6v6l4 2M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
+                </svg>
+              </div>
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontFamily: "var(--font-heading)",
+                  marginBottom: "var(--space-sm)",
+                  color: "var(--charcoal)",
+                }}
+              >
+                Wealthy Psyche
+              </h3>
+              <p
+                style={{
+                  color: "var(--charcoal-soft)",
+                  fontSize: "var(--text-sm)",
+                  marginBottom: "var(--space-md)",
+                }}
+              >
+                A digital platform dedicated to premium psychological and
+                philosophical archives—curated content for deep thinkers.
+              </p>
+              <Link
+                href="https://wealthypsyche.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "var(--space-xs)",
+                  color: "var(--cyan)",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--green)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--cyan)")
+                }
+              >
+                Explore →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Tech Stack – Dark */}
       <section
         style={{
