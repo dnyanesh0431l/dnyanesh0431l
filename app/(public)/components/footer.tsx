@@ -84,6 +84,22 @@ export default function Footer() {
   return (
     <>
       <style>{`
+        /* Base footer container */
+        .footer-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+        }
+        
+        /* Default desktop: 4 columns (brand + 3 nav) */
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1fr;
+          gap: var(--space-2xl) var(--space-xl);
+          align-items: start;
+        }
+        
+        /* Navigation links */
         .footer-nav-link {
           display: inline-block;
           font-size: var(--text-xs);
@@ -99,6 +115,8 @@ export default function Footer() {
           color: var(--cyan);
           opacity: 1;
         }
+        
+        /* Column headings */
         .footer-col-heading {
           font-family: var(--font-heading);
           font-size: var(--text-xs);
@@ -107,6 +125,8 @@ export default function Footer() {
           text-transform: uppercase;
           margin-bottom: var(--space-md);
         }
+        
+        /* Social buttons */
         .social-btn {
           display: flex;
           align-items: center;
@@ -127,12 +147,16 @@ export default function Footer() {
           border-color: rgba(0, 229, 255, 0.35);
           transform: translateY(-2px);
         }
+        
+        /* Divider */
         .footer-divider {
           width: 100%;
           height: 1px;
           background: rgba(0, 229, 255, 0.08);
           margin: var(--space-xl) 0 var(--space-lg);
         }
+        
+        /* Bottom links */
         .footer-bottom-link {
           font-size: var(--text-xs);
           color: var(--snow-soft);
@@ -145,6 +169,8 @@ export default function Footer() {
           color: var(--cyan);
           opacity: 1;
         }
+        
+        /* Hire CTA button */
         .hire-cta-btn {
           display: inline-flex;
           align-items: center;
@@ -166,26 +192,69 @@ export default function Footer() {
           transform: translateY(-1px);
           color: var(--charcoal);
         }
+        
         @keyframes hirePulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.3); }
           50% { box-shadow: 0 0 0 6px rgba(0, 229, 255, 0); }
         }
+        
+        /* Tablet and mobile: 2 columns for nav sections,
+           brand takes full width on top */
         @media (max-width: 768px) {
-          .footer-grid {
-            grid-template-columns: 1fr 1fr !important;
+          .footer-inner {
+            padding: var(--space-xl) var(--space-md);
           }
+          
+          .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;   /* two columns for nav sections */
+            gap: var(--space-xl) var(--space-lg);
+          }
+          
+          /* Brand column spans both columns, sits at the top */
           .footer-brand-col {
             grid-column: 1 / -1;
+            margin-bottom: var(--space-md);
+          }
+          
+          /* The three nav columns will automatically flow:
+             - "Work" → column 1, row 1
+             - "Writing" → column 2, row 1
+             - "Company" → column 1, row 2
+             This gives a clean 2‑column layout on mobile */
+          .footer-divider {
+            margin: var(--space-lg) 0 var(--space-md);
           }
         }
+        
+        /* Small mobile (below 480px) */
         @media (max-width: 480px) {
-          .footer-grid {
-            grid-template-columns: 1fr !important;
+          .footer-inner {
+            padding: var(--space-lg) var(--space-md);
           }
+          
+          .hire-cta-btn {
+            white-space: normal;
+            justify-content: center;
+            width: 100%;
+          }
+          
           .footer-bottom-row {
             flex-direction: column !important;
             gap: var(--space-md) !important;
             align-items: flex-start !important;
+          }
+          
+          .footer-bottom-row > div:last-child {
+            flex-wrap: wrap;
+            gap: var(--space-md);
+          }
+        }
+        
+        /* Small desktop / large tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .footer-grid {
+            gap: var(--space-xl);
           }
         }
       `}</style>
@@ -198,23 +267,9 @@ export default function Footer() {
           WebkitBackdropFilter: "blur(14px)",
         }}
       >
-        <div
-          style={{
-            maxWidth: 1200,
-            margin: "0 auto",
-            padding: "var(--space-2xl) var(--space-lg) var(--space-xl)",
-          }}
-        >
+        <div className="footer-inner">
           {/* TOP GRID */}
-          <div
-            className="footer-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "2fr 1fr 1fr 1fr",
-              gap: "var(--space-2xl) var(--space-xl)",
-              alignItems: "start",
-            }}
-          >
+          <div className="footer-grid">
             {/* BRAND COLUMN */}
             <div className="footer-brand-col">
               {/* Logo */}
@@ -322,7 +377,7 @@ export default function Footer() {
               </Link>
             </div>
 
-            {/* NAV COLUMNS */}
+            {/* NAV COLUMNS - these three will reflow automatically on mobile */}
             {FOOTER_COLS.map((col) => (
               <div key={col.heading}>
                 <div className="footer-col-heading">{col.heading}</div>

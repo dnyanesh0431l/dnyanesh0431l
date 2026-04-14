@@ -20,7 +20,12 @@ export const metadata: Metadata = {
     "white label developer",
     "hire web developer India",
   ],
-  authors: [{ name: "Dnyaneshwar Ingle", url: "https://dnyaneshwaringle.bytesolvesolutions.in" }],
+  authors: [
+    {
+      name: "Dnyaneshwar Ingle",
+      url: "https://dnyaneshwaringle.bytesolvesolutions.in",
+    },
+  ],
   creator: "Dnyaneshwar Ingle",
   openGraph: {
     title: "About Dnyaneshwar Ingle | Freelance Web & App Developer – India",

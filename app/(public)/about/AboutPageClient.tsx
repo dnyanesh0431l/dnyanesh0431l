@@ -99,7 +99,6 @@ const techStack = [
 ];
 
 export default function AboutPageClient() {
-  // ✅ Fix: void return type so TypeScript is happy
   const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -253,7 +252,6 @@ export default function AboutPageClient() {
                   borderRadius: "var(--radius-lg)",
                   overflow: "hidden",
                   border: "3px solid var(--cyan)",
-                  boxShadow: "0 0 0 6px rgba(0,229,255,0.1)",
                 }}
               >
                 <Image
@@ -374,7 +372,6 @@ export default function AboutPageClient() {
                   background: "var(--snow)",
                   borderRadius: "var(--radius-lg)",
                   padding: "var(--space-xl)",
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.07)",
                   transition: "transform 0.2s",
                   textAlign: "left",
                 }}
@@ -462,7 +459,6 @@ export default function AboutPageClient() {
                   background: "var(--snow)",
                   borderRadius: "var(--radius-lg)",
                   padding: "var(--space-xl)",
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.07)",
                   transition: "transform 0.2s",
                   textAlign: "left",
                 }}
@@ -628,7 +624,7 @@ export default function AboutPageClient() {
           </div>
         </section>
 
-        {/* ── JOURNEY TIMELINE ── */}
+        {/* ── JOURNEY TIMELINE (PERFECT ON MOBILE) ── */}
         <section
           aria-label="My Journey"
           style={{
@@ -638,7 +634,7 @@ export default function AboutPageClient() {
             overflow: "hidden",
           }}
         >
-          {/* Parallax background — ref attached directly, void return */}
+          {/* Parallax background */}
           <div
             ref={parallaxRef}
             style={{
@@ -677,7 +673,7 @@ export default function AboutPageClient() {
               My Journey
             </h2>
 
-            <div className="zigzag-timeline">
+            <div className="timeline-container">
               {journeySteps.map((step, idx) => {
                 const isOdd = idx % 2 === 0;
                 return (
@@ -769,32 +765,29 @@ export default function AboutPageClient() {
         </section>
       </main>
 
-      {/* ── STYLES ── */}
+      {/* ── STYLES (NO SHADOWS, NO BORDER COLORS, PERFECT MOBILE) ── */}
       <style jsx>{`
-        .zigzag-timeline {
+        .timeline-container {
           position: relative;
           display: flex;
           flex-direction: column;
-          gap: 80px;
+          gap: 60px;
         }
 
-        .zigzag-timeline::before {
-          content: "";
-          position: absolute;
-          top: 40px;
-          left: 50%;
-          width: 2px;
-          height: calc(100% - 40px);
-          background: repeating-linear-gradient(
-            45deg,
-            var(--cyan),
-            var(--cyan) 10px,
-            transparent 10px,
-            transparent 20px
-          );
-          transform: translateX(-50%);
-          z-index: 0;
-          opacity: 0.4;
+        /* Desktop vertical line (hidden on mobile) */
+        @media (min-width: 769px) {
+          .timeline-container::before {
+            content: "";
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            width: 2px;
+            height: calc(100% - 40px);
+            background: var(--cyan);
+            transform: translateX(-50%);
+            z-index: 0;
+            opacity: 0.4;
+          }
         }
 
         .timeline-item {
@@ -804,25 +797,29 @@ export default function AboutPageClient() {
           align-items: center;
         }
 
-        .timeline-item:not(:last-child)::after {
-          content: "";
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          width: 40px;
-          height: 80px;
-          transform: translateX(-50%);
-          border-left: 2px dashed rgba(0, 229, 255, 0.35);
-          border-bottom: 2px dashed rgba(0, 229, 255, 0.35);
-          border-radius: 0 0 0 30px;
-          z-index: 1;
-        }
+        /* Desktop connector lines */
+        @media (min-width: 769px) {
+          .timeline-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 40px;
+            height: 60px;
+            transform: translateX(-50%);
+            border-left: 2px solid var(--cyan);
+            border-bottom: 2px solid var(--cyan);
+            border-radius: 0 0 0 30px;
+            z-index: 1;
+            opacity: 0.4;
+          }
 
-        .timeline-item:nth-child(even):not(:last-child)::after {
-          border-left: none;
-          border-right: 2px dashed rgba(0, 229, 255, 0.35);
-          border-bottom: 2px dashed rgba(0, 229, 255, 0.35);
-          border-radius: 0 0 30px 0;
+          .timeline-item:nth-child(even):not(:last-child)::after {
+            border-left: none;
+            border-right: 2px solid var(--cyan);
+            border-bottom: 2px solid var(--cyan);
+            border-radius: 0 0 30px 0;
+          }
         }
 
         .timeline-content {
@@ -831,17 +828,11 @@ export default function AboutPageClient() {
           backdrop-filter: blur(6px);
           padding: var(--space-lg);
           border-radius: var(--radius-lg);
-          border: 1px solid rgba(0, 229, 255, 0.15);
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s;
+          transition: transform 0.3s ease;
         }
 
         .timeline-content:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-          border-color: var(--cyan);
         }
 
         .timeline-year {
@@ -873,17 +864,13 @@ export default function AboutPageClient() {
           background: var(--charcoal);
           border-radius: 50%;
           border: 3px solid var(--cyan);
-          box-shadow: 0 0 0 5px rgba(0, 229, 255, 0.15);
           overflow: hidden;
-          transition:
-            transform 0.3s ease,
-            border-color 0.3s;
+          transition: transform 0.3s ease;
           z-index: 2;
         }
 
         .timeline-circle:hover {
           transform: scale(1.08);
-          border-color: var(--green);
         }
 
         .content-left {
@@ -905,33 +892,54 @@ export default function AboutPageClient() {
           order: 1;
         }
 
+        /* PERFECT MOBILE STYLES - Stack vertically, center everything */
         @media (max-width: 768px) {
+          .timeline-container {
+            gap: 40px;
+          }
+
           .timeline-item {
             flex-direction: column;
-            gap: var(--space-md);
+            gap: 16px;
           }
+
           .timeline-content {
             width: 100%;
             text-align: center;
-          }
-          .content-left,
-          .content-right {
             margin: 0;
             order: 2;
           }
+
+          .content-left,
+          .content-right {
+            text-align: center;
+            margin: 0;
+            order: 2;
+          }
+
           .timeline-circle {
             order: 1 !important;
             margin: 0 auto;
           }
-          .zigzag-timeline::before {
+
+          /* Simple vertical line in center for mobile */
+          .timeline-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
             left: 50%;
+            width: 2px;
+            height: 100%;
+            background: var(--cyan);
+            transform: translateX(-50%);
+            z-index: 0;
+            opacity: 0.3;
           }
+
+          /* Remove connector lines on mobile */
           .timeline-item:not(:last-child)::after,
           .timeline-item:nth-child(even):not(:last-child)::after {
-            left: 50%;
-            border-left: 2px dashed rgba(0, 229, 255, 0.35);
-            border-right: none;
-            border-radius: 0 0 0 30px;
+            display: none;
           }
         }
       `}</style>

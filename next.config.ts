@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["i.pinimg.com"],
   },
+ 
 };
 
 export default nextConfig;
+ // next.config.js
+module.exports = {
+  allowedDevOrigins: ['192.168.1.3'],
+}

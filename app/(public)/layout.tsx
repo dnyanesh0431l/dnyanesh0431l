@@ -1,10 +1,10 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import Header from "./components/header";
 import Footer from "./components/footer";
+import Header from "./components/header";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "Dnyaneshwar Ingle - Best Freelancer in India",
+  title: "Dnyaneshwar Ingle | Software Product Engineer & Full Stack Developer",
   description:
     "Web & Application Development | SEO | Security | White Label Solutions. From design to deployment, I handle everything.",
 };
