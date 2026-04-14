@@ -1,11 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
-import { FiGithub, FiExternalLink, FiArrowLeft, FiCheck } from "react-icons/fi";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  FiArrowLeft,
+  FiCheck,
+  FiExternalLink,
+  FiGithub,
+  FiMaximize2,
+  FiX,
+} from "react-icons/fi";
 
 interface Project {
   id: string;
@@ -27,6 +34,8 @@ export default function SingleProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -46,6 +55,29 @@ export default function SingleProjectPage() {
     fetchProject();
   }, [slug]);
 
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = "auto";
+  };
+
+  const nextImage = () => {
+    if (project && lightboxIndex < project.images.length - 1) {
+      setLightboxIndex(lightboxIndex + 1);
+    }
+  };
+
+  const prevImage = () => {
+    if (lightboxIndex > 0) {
+      setLightboxIndex(lightboxIndex - 1);
+    }
+  };
+
   if (loading) {
     return (
       <div style={styles.loadingContainer}>
@@ -58,139 +90,212 @@ export default function SingleProjectPage() {
     return (
       <div style={styles.errorContainer}>
         <h1 style={styles.errorTitle}>Project not found</h1>
-        <Link href="/projects" style={styles.backLink}>Back to Projects</Link>
+        <Link href="/projects" style={styles.backLink}>
+          Back to Projects
+        </Link>
       </div>
     );
   }
 
   return (
-    <div style={styles.container}>
-      {/* Back Button - Compact */}
-      <div style={styles.backBar}>
-        <Link href="/projects" style={styles.backBtn}>
-          <FiArrowLeft size={16} /> Back to Projects
-        </Link>
-      </div>
+    <>
+      <div style={styles.container}>
+        {/* Back Button */}
+        <div style={styles.backBar}>
+          <Link href="/projects" style={styles.backBtn}>
+            <FiArrowLeft size={16} /> Back to Projects
+          </Link>
+        </div>
 
-      {/* Hero - Compact */}
-      <div style={styles.hero}>
-        <div style={styles.heroContent}>
-          <h1 style={styles.title}>{project.title}</h1>
-          <p style={styles.description}>{project.shortDescription}</p>
+        {/* Hero */}
+        <div style={styles.hero}>
+          <div style={styles.heroContent}>
+            <h1 style={styles.title}>{project.title}</h1>
+            <p style={styles.description}>{project.shortDescription}</p>
 
-          {/* Technologies */}
-          <div style={styles.techList}>
-            {project.technologies?.map((tech) => (
-              <span key={tech} style={styles.techBadge}>{tech}</span>
-            ))}
-          </div>
-
-          {/* Links */}
-          {project.links && project.links.length > 0 && (
-            <div style={styles.linkList}>
-              {project.links.map((link, idx) => (
-                <a
-                  key={idx}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.linkBtn}
-                >
-                  {link.label === "GitHub" ? <FiGithub size={14} /> : <FiExternalLink size={14} />}
-                  {link.label}
-                </a>
+            {/* Technologies */}
+            <div style={styles.techList}>
+              {project.technologies?.map((tech) => (
+                <span key={tech} style={styles.techBadge}>
+                  {tech}
+                </span>
               ))}
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Gallery - Compact */}
-      {project.images && project.images.length > 0 && (
-        <div style={styles.gallery}>
-          <div style={styles.mainImage}>
-            <img
-              src={project.images[selectedImage].url}
-              alt={project.images[selectedImage].alt}
-              style={styles.mainImageImg}
+            {/* Links */}
+            {project.links && project.links.length > 0 && (
+              <div style={styles.linkList}>
+                {project.links.map((link, idx) => (
+                  <a
+                    key={idx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.linkBtn}
+                  >
+                    {link.label === "GitHub" ? (
+                      <FiGithub size={14} />
+                    ) : (
+                      <FiExternalLink size={14} />
+                    )}
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Gallery */}
+        {project.images && project.images.length > 0 && (
+          <div style={styles.gallery}>
+            <div
+              style={styles.mainImage}
+              onClick={() => openLightbox(selectedImage)}
+            >
+              <img
+                src={project.images[selectedImage].url}
+                alt={project.images[selectedImage].alt}
+                style={styles.mainImageImg}
+              />
+              <div style={styles.expandIcon}>
+                <FiMaximize2 size={20} />
+              </div>
+            </div>
+            {project.images[selectedImage].title && (
+              <div style={styles.imageTitle}>
+                {project.images[selectedImage].title}
+              </div>
+            )}
+            {project.images.length > 1 && (
+              <div style={styles.thumbnails}>
+                {project.images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    style={{
+                      ...styles.thumbnail,
+                      ...(idx === selectedImage ? styles.thumbnailActive : {}),
+                    }}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.alt}
+                      style={styles.thumbnailImg}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Content - Features now above Overview */}
+        <div style={styles.content}>
+          {/* Features Section (moved up) */}
+          {project.features && project.features.length > 0 && (
+            <div style={styles.section}>
+              <h2 style={styles.sectionTitle}>Key Features</h2>
+              <div style={styles.featuresGrid}>
+                {project.features.map((feature, idx) => (
+                  <div key={idx} style={styles.featureItem}>
+                    <FiCheck size={16} style={styles.featureIcon} />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Full Description (Overview) */}
+          <div style={styles.section}>
+            <h2 style={styles.sectionTitle}>Overview</h2>
+            <div
+              style={styles.fullDescription}
+              dangerouslySetInnerHTML={{
+                __html: project.fullDescription?.replace(/\n/g, "<br/>") || "",
+              }}
             />
           </div>
-          {project.images.length > 1 && (
-            <div style={styles.thumbnails}>
-              {project.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  style={{
-                    ...styles.thumbnail,
-                    ...(idx === selectedImage ? styles.thumbnailActive : {}),
-                  }}
-                >
-                  <img src={img.url} alt={img.alt} style={styles.thumbnailImg} />
-                </button>
-              ))}
+
+          {/* Challenges & Solutions */}
+          {project.challenges && (
+            <div style={styles.section}>
+              <h2 style={styles.sectionTitle}>Challenges</h2>
+              <p style={styles.text}>{project.challenges}</p>
+            </div>
+          )}
+
+          {project.solutions && (
+            <div style={styles.section}>
+              <h2 style={styles.sectionTitle}>Solutions</h2>
+              <p style={styles.text}>{project.solutions}</p>
+            </div>
+          )}
+
+          {project.results && (
+            <div style={styles.section}>
+              <h2 style={styles.sectionTitle}>Results</h2>
+              <p style={styles.text}>{project.results}</p>
             </div>
           )}
         </div>
-      )}
+      </div>
 
-      {/* Content - Compact */}
-      <div style={styles.content}>
-        {/* Full Description */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Overview</h2>
+      {/* Lightbox Modal */}
+      {lightboxOpen && project && (
+        <div style={styles.lightboxOverlay} onClick={closeLightbox}>
           <div
-            style={styles.fullDescription}
-            dangerouslySetInnerHTML={{ __html: project.fullDescription?.replace(/\n/g, "<br/>") || "" }}
-          />
-        </div>
-
-        {/* Features */}
-        {project.features && project.features.length > 0 && (
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Key Features</h2>
-            <div style={styles.featuresGrid}>
-              {project.features.map((feature, idx) => (
-                <div key={idx} style={styles.featureItem}>
-                  <FiCheck size={16} style={styles.featureIcon} />
-                  <span>{feature}</span>
+            style={styles.lightboxContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button style={styles.lightboxClose} onClick={closeLightbox}>
+              <FiX size={28} />
+            </button>
+            <button
+              style={styles.lightboxPrev}
+              onClick={prevImage}
+              disabled={lightboxIndex === 0}
+            >
+              ‹
+            </button>
+            <div style={styles.lightboxImageContainer}>
+              <img
+                src={project.images[lightboxIndex].url}
+                alt={project.images[lightboxIndex].alt}
+                style={styles.lightboxImage}
+              />
+              <div style={styles.lightboxCaption}>
+                <div style={styles.lightboxTitle}>
+                  {project.images[lightboxIndex].title}
                 </div>
-              ))}
+                <div style={styles.lightboxAlt}>
+                  {project.images[lightboxIndex].alt}
+                </div>
+              </div>
+            </div>
+            <button
+              style={styles.lightboxNext}
+              onClick={nextImage}
+              disabled={lightboxIndex === project.images.length - 1}
+            >
+              ›
+            </button>
+            <div style={styles.lightboxCounter}>
+              {lightboxIndex + 1} / {project.images.length}
             </div>
           </div>
-        )}
-
-        {/* Challenges & Solutions */}
-        {project.challenges && (
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Challenges</h2>
-            <p style={styles.text}>{project.challenges}</p>
-          </div>
-        )}
-
-        {project.solutions && (
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Solutions</h2>
-            <p style={styles.text}>{project.solutions}</p>
-          </div>
-        )}
-
-        {project.results && (
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Results</h2>
-            <p style={styles.text}>{project.results}</p>
-          </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
 
-// All styles use CSS custom properties from globals.css
+// Styles with responsive title and lightbox
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: "100vh",
-    background: "var(--snow)", // snow white background
+    background: "var(--snow)",
   },
   loadingContainer: {
     display: "flex",
@@ -250,7 +355,7 @@ const styles: Record<string, React.CSSProperties> = {
     margin: "0 auto",
   },
   title: {
-    fontSize: "var(--text-2xl)",
+    fontSize: "var(--text-2xl)", // 56px default
     fontWeight: 700,
     fontFamily: "var(--font-heading)",
     marginBottom: "var(--space-sm)",
@@ -303,18 +408,43 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "0 var(--space-md)",
   },
   mainImage: {
+    position: "relative",
     background: "var(--snow)",
     borderRadius: "var(--radius-md)",
     overflow: "hidden",
-    marginBottom: "var(--space-sm)",
+    marginBottom: "var(--space-xs)",
     boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
     border: "1px solid var(--charcoal-soft)",
+    cursor: "pointer",
   },
   mainImageImg: {
     width: "100%",
     height: "auto",
     maxHeight: 400,
     objectFit: "contain",
+    display: "block",
+  },
+  expandIcon: {
+    position: "absolute",
+    bottom: "var(--space-sm)",
+    right: "var(--space-sm)",
+    background: "rgba(0,0,0,0.6)",
+    borderRadius: "var(--radius-sm)",
+    padding: "var(--space-xs)",
+    color: "var(--snow)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "opacity 0.2s",
+  },
+  imageTitle: {
+    fontSize: "var(--text-sm)",
+    color: "var(--charcoal)",
+    textAlign: "center",
+    marginTop: "var(--space-xs)",
+    marginBottom: "var(--space-md)",
+    fontFamily: "var(--font-body)",
+    fontStyle: "italic",
   },
   thumbnails: {
     display: "flex",
@@ -388,9 +518,114 @@ const styles: Record<string, React.CSSProperties> = {
     color: "var(--charcoal)",
     fontFamily: "var(--font-body)",
   },
+  // Lightbox styles
+  lightboxOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0,0,0,0.95)",
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lightboxContent: {
+    position: "relative",
+    width: "90vw",
+    maxWidth: 1200,
+    height: "90vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lightboxClose: {
+    position: "absolute",
+    top: "var(--space-md)",
+    right: "var(--space-md)",
+    background: "none",
+    border: "none",
+    color: "var(--snow)",
+    cursor: "pointer",
+    zIndex: 1001,
+    padding: "var(--space-sm)",
+  },
+  lightboxPrev: {
+    position: "absolute",
+    left: "var(--space-md)",
+    background: "rgba(255,255,255,0.2)",
+    border: "none",
+    color: "var(--snow)",
+    fontSize: 48,
+    cursor: "pointer",
+    padding: "var(--space-sm) var(--space-md)",
+    borderRadius: "var(--radius-md)",
+    transition: "background 0.2s",
+    zIndex: 1001,
+  },
+  lightboxNext: {
+    position: "absolute",
+    right: "var(--space-md)",
+    background: "rgba(255,255,255,0.2)",
+    border: "none",
+    color: "var(--snow)",
+    fontSize: 48,
+    cursor: "pointer",
+    padding: "var(--space-sm) var(--space-md)",
+    borderRadius: "var(--radius-md)",
+    transition: "background 0.2s",
+    zIndex: 1001,
+  },
+  lightboxImageContainer: {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    textAlign: "center",
+  },
+  lightboxImage: {
+    maxWidth: "100%",
+    maxHeight: "80vh",
+    objectFit: "contain",
+    borderRadius: "var(--radius-md)",
+  },
+  lightboxCaption: {
+    position: "absolute",
+    bottom: "var(--space-lg)",
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    color: "var(--snow)",
+    background: "rgba(0,0,0,0.6)",
+    padding: "var(--space-sm)",
+    borderRadius: "var(--radius-md)",
+    margin: "0 auto",
+    width: "fit-content",
+    maxWidth: "80%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  lightboxTitle: {
+    fontSize: "var(--text-base)",
+    fontWeight: 600,
+    marginBottom: "var(--space-xs)",
+  },
+  lightboxAlt: {
+    fontSize: "var(--text-sm)",
+    opacity: 0.8,
+  },
+  lightboxCounter: {
+    position: "absolute",
+    bottom: "var(--space-md)",
+    right: "var(--space-md)",
+    color: "var(--snow)",
+    background: "rgba(0,0,0,0.5)",
+    padding: "4px 8px",
+    borderRadius: "var(--radius-sm)",
+    fontSize: "var(--text-sm)",
+  },
 };
 
-// Animation and hover effects
+// Global styles including responsive title
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.textContent = `
@@ -407,6 +642,47 @@ if (typeof document !== "undefined") {
     .thumbnail:hover {
       border-color: var(--cyan);
     }
+    .main-image:hover .expand-icon {
+      opacity: 1;
+    }
+    .expand-icon {
+      opacity: 0.7;
+    }
+    .lightbox-prev:hover, .lightbox-next:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .lightbox-prev:disabled, .lightbox-next:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Responsive title */
+    @media (max-width: 768px) {
+      .title {
+        font-size: var(--text-xl) !important; /* 36px on tablet */
+      }
+    }
+    @media (max-width: 480px) {
+      .title {
+        font-size: var(--text-lg) !important; /* 24px on mobile */
+      }
+    }
   `;
   document.head.appendChild(style);
+
+  // Add class names for responsive hooks (since inline styles don't do media queries)
+  const style2 = document.createElement("style");
+  style2.textContent = `
+    @media (max-width: 768px) {
+      .responsive-title {
+        font-size: var(--text-xl) !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .responsive-title {
+        font-size: var(--text-lg) !important;
+      }
+    }
+  `;
+  document.head.appendChild(style2);
 }
