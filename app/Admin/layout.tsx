@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "@/app/lib/firebase";
 import {
   FiArrowLeft,
   FiBookOpen,
@@ -10,6 +12,7 @@ import {
   FiFileText,
   FiFolder,
   FiImage,
+  FiLogOut,
   FiMail,
   FiMaximize2,
   FiMenu,
@@ -36,10 +39,32 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Check authentication
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setAuthLoading(false);
+      if (!user && pathname !== "/Admin/login") {
+        router.push("/Admin/login");
+      }
+    });
+    return () => unsubscribe();
+  }, [pathname, router]);
+
+  // Redirect if on login page but already logged in
+  useEffect(() => {
+    if (!authLoading && user && pathname === "/Admin/login") {
+      router.push("/Admin/projects");
+    }
+  }, [user, authLoading, pathname, router]);
 
   useEffect(() => {
     const checkScreen = () => {
@@ -51,7 +76,6 @@ export default function AdminLayout({
     checkScreen();
     window.addEventListener("resize", checkScreen);
 
-    // Listen for fullscreen changes
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
@@ -71,197 +95,203 @@ export default function AdminLayout({
     }
   };
 
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/Admin/login");
+  };
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div style={styles.loadingContainer}>
+        <div style={styles.loadingSpinner} />
+      </div>
+    );
+  }
+
+  // If not logged in and not on login page, don't render layout (will redirect)
+  if (!user && pathname !== "/Admin/login") {
+    return null;
+  }
+
+  // If on login page, render only the children (login page itself)
+  if (pathname === "/Admin/login") {
+    return <>{children}</>;
+  }
+
   const sidebarWidth = collapsed ? 72 : 240;
 
   return (
-    <html lang="en">
-      <body style={{ margin: 0, fontFamily: "Inter, sans-serif" }}>
-        <div style={styles.container}>
-          {/* Sidebar */}
-          <aside style={{ ...styles.sidebar, width: sidebarWidth }}>
-            <div style={styles.sidebarInner}>
-              {/* Logo */}
-              <div style={styles.logoArea}>
-                <div style={styles.logoIcon}>A</div>
-                {!collapsed && (
-                  <div style={styles.logoText}>
-                    <div>Admin</div>
-                    <div style={styles.logoSub}>Panel</div>
-                  </div>
-                )}
+    <div style={styles.container}>
+      {/* Sidebar */}
+      <aside style={{ ...styles.sidebar, width: sidebarWidth }}>
+        <div style={styles.sidebarInner}>
+          <div style={styles.logoArea}>
+            <div style={styles.logoIcon}>A</div>
+            {!collapsed && (
+              <div style={styles.logoText}>
+                <div>Admin</div>
+                <div style={styles.logoSub}>Panel</div>
               </div>
+            )}
+          </div>
 
-              {/* Navigation */}
+          <nav style={styles.nav}>
+            {ADMIN_NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.href;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  title={collapsed ? item.name : undefined}
+                  style={{
+                    ...styles.navLink,
+                    ...(isActive ? styles.navLinkActive : {}),
+                    justifyContent: collapsed ? "center" : "flex-start",
+                    padding: collapsed ? "10px 0" : "10px 16px",
+                  }}
+                >
+                  <Icon size={18} style={styles.navIcon} />
+                  {!collapsed && <span>{item.name}</span>}
+                  {isActive && !collapsed && <span style={styles.activeDot} />}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div style={styles.bottomArea}>
+            <Link
+              href="/Admin/settings"
+              title={collapsed ? "Settings" : undefined}
+              style={{
+                ...styles.bottomLink,
+                justifyContent: collapsed ? "center" : "flex-start",
+                padding: collapsed ? "10px 0" : "10px 16px",
+              }}
+            >
+              <FiSettings size={18} style={styles.navIcon} />
+              {!collapsed && <span>Settings</span>}
+            </Link>
+            <button
+              onClick={handleLogout}
+              style={{
+                ...styles.bottomLink,
+                ...styles.logoutBtn,
+                justifyContent: collapsed ? "center" : "flex-start",
+                padding: collapsed ? "10px 0" : "10px 16px",
+                width: "100%",
+              }}
+              title={collapsed ? "Logout" : undefined}
+            >
+              <FiLogOut size={18} style={styles.navIcon} />
+              {!collapsed && <span>Logout</span>}
+            </button>
+            <Link
+              href="/"
+              title={collapsed ? "Back to Site" : undefined}
+              style={{
+                ...styles.bottomLink,
+                justifyContent: collapsed ? "center" : "flex-start",
+                padding: collapsed ? "10px 0" : "10px 16px",
+              }}
+            >
+              <FiArrowLeft size={18} style={styles.navIcon} />
+              {!collapsed && <span>Back to Site</span>}
+            </Link>
+          </div>
+
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            style={styles.collapseBtn}
+          >
+            {collapsed ? "→" : "←"}
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div style={{ ...styles.main, marginLeft: sidebarWidth }}>
+        <header style={styles.header}>
+          <div style={styles.headerLeft}>
+            <button
+              onClick={() =>
+                isMobile ? setMobileOpen(true) : setCollapsed(!collapsed)
+              }
+              style={styles.iconBtn}
+            >
+              <FiMenu size={18} />
+            </button>
+            <div>
+              <h1 style={styles.pageTitle}>
+                {ADMIN_NAV_ITEMS.find((i) => i.href === pathname)?.name ||
+                  "Dashboard"}
+              </h1>
+              <p style={styles.pageSub}>Content Management</p>
+            </div>
+          </div>
+          <div style={styles.headerRight}>
+            <div style={styles.windowControls}>
+              <button
+                onClick={toggleFullscreen}
+                style={styles.iconBtn}
+                title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+              >
+                {isFullscreen ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />}
+              </button>
+            </div>
+            <div style={styles.userBadge}>
+              <div style={styles.userAvatar}>
+                {user?.email?.charAt(0).toUpperCase() || "A"}
+              </div>
+              {!isMobile && (
+                <div>
+                  <div style={styles.userName}>Admin</div>
+                  <div style={styles.userEmail}>{user?.email}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+        <main style={styles.content}>{children}</main>
+      </div>
+
+      {/* Mobile Sidebar */}
+      {mobileOpen && (
+        <>
+          <div style={styles.overlay} onClick={() => setMobileOpen(false)} />
+          <aside style={{ ...styles.sidebar, width: 260, position: "fixed", zIndex: 1001 }}>
+            <div style={styles.sidebarInner}>
+              <div style={{ display: "flex", justifyContent: "flex-end", padding: 12 }}>
+                <button onClick={() => setMobileOpen(false)} style={styles.closeBtn}>
+                  ✕
+                </button>
+              </div>
               <nav style={styles.nav}>
                 {ADMIN_NAV_ITEMS.map((item) => {
-                  const isActive = pathname === item.href;
                   const Icon = item.icon;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      title={collapsed ? item.name : undefined}
-                      style={{
-                        ...styles.navLink,
-                        ...(isActive ? styles.navLinkActive : {}),
-                        justifyContent: collapsed ? "center" : "flex-start",
-                        padding: collapsed ? "10px 0" : "10px 16px",
-                      }}
+                      onClick={() => setMobileOpen(false)}
+                      style={styles.mobileNavLink}
                     >
                       <Icon size={18} style={styles.navIcon} />
-                      {!collapsed && <span>{item.name}</span>}
-                      {isActive && !collapsed && (
-                        <span style={styles.activeDot} />
-                      )}
+                      <span>{item.name}</span>
                     </Link>
                   );
                 })}
+                <button onClick={handleLogout} style={styles.mobileNavLink}>
+                  <FiLogOut size={18} style={styles.navIcon} />
+                  <span>Logout</span>
+                </button>
               </nav>
-
-              {/* Bottom Actions */}
-              <div style={styles.bottomArea}>
-                <Link
-                  href="/Admin/settings"
-                  title={collapsed ? "Settings" : undefined}
-                  style={{
-                    ...styles.bottomLink,
-                    justifyContent: collapsed ? "center" : "flex-start",
-                    padding: collapsed ? "10px 0" : "10px 16px",
-                  }}
-                >
-                  <FiSettings size={18} style={styles.navIcon} />
-                  {!collapsed && <span>Settings</span>}
-                </Link>
-                <Link
-                  href="/"
-                  title={collapsed ? "Back to Site" : undefined}
-                  style={{
-                    ...styles.bottomLink,
-                    justifyContent: collapsed ? "center" : "flex-start",
-                    padding: collapsed ? "10px 0" : "10px 16px",
-                  }}
-                >
-                  <FiArrowLeft size={18} style={styles.navIcon} />
-                  {!collapsed && <span>Back to Site</span>}
-                </Link>
-              </div>
-
-              {/* Collapse Toggle */}
-              <button
-                onClick={() => setCollapsed(!collapsed)}
-                style={styles.collapseBtn}
-              >
-                {collapsed ? "→" : "←"}
-              </button>
             </div>
           </aside>
-
-          {/* Main Content */}
-          <div style={{ ...styles.main, marginLeft: sidebarWidth }}>
-            {/* Top Header */}
-            <header style={styles.header}>
-              <div style={styles.headerLeft}>
-                <button
-                  onClick={() =>
-                    isMobile ? setMobileOpen(true) : setCollapsed(!collapsed)
-                  }
-                  style={styles.iconBtn}
-                >
-                  <FiMenu size={18} />
-                </button>
-                <div>
-                  <h1 style={styles.pageTitle}>
-                    {ADMIN_NAV_ITEMS.find((i) => i.href === pathname)?.name ||
-                      "Dashboard"}
-                  </h1>
-                  <p style={styles.pageSub}>Content Management</p>
-                </div>
-              </div>
-              <div style={styles.headerRight}>
-                {/* Window Controls */}
-                <div style={styles.windowControls}>
-                  <button
-                    onClick={toggleFullscreen}
-                    style={styles.iconBtn}
-                    title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-                  >
-                    {isFullscreen ? (
-                      <FiMinimize2 size={16} />
-                    ) : (
-                      <FiMaximize2 size={16} />
-                    )}
-                  </button>
-                </div>
-
-                <div style={styles.userBadge}>
-                  <div style={styles.userAvatar}>A</div>
-                  {!isMobile && (
-                    <div>
-                      <div style={styles.userName}>Admin</div>
-                      <div style={styles.userEmail}>admin@site.com</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </header>
-
-            {/* Page Content */}
-            <main style={styles.content}>{children}</main>
-          </div>
-
-          {/* Mobile Sidebar */}
-          {mobileOpen && (
-            <>
-              <div
-                style={styles.overlay}
-                onClick={() => setMobileOpen(false)}
-              />
-              <aside
-                style={{
-                  ...styles.sidebar,
-                  width: 260,
-                  position: "fixed",
-                  zIndex: 1001,
-                }}
-              >
-                <div style={styles.sidebarInner}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      padding: 12,
-                    }}
-                  >
-                    <button
-                      onClick={() => setMobileOpen(false)}
-                      style={styles.closeBtn}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                  <nav style={styles.nav}>
-                    {ADMIN_NAV_ITEMS.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          style={styles.mobileNavLink}
-                        >
-                          <Icon size={18} style={styles.navIcon} />
-                          <span>{item.name}</span>
-                        </Link>
-                      );
-                    })}
-                  </nav>
-                </div>
-              </aside>
-            </>
-          )}
-        </div>
-      </body>
-    </html>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -370,6 +400,12 @@ const styles: Record<string, React.CSSProperties> = {
     textDecoration: "none",
     fontSize: 13,
     marginBottom: 4,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+  },
+  logoutBtn: {
+    color: "#e94560",
   },
   collapseBtn: {
     position: "absolute",
@@ -499,5 +535,36 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#a0a0c0",
     textDecoration: "none",
     fontSize: 14,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    width: "100%",
+    textAlign: "left",
+  },
+  loadingContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    background: "var(--snow)",
+  },
+  loadingSpinner: {
+    width: 32,
+    height: 32,
+    border: "3px solid var(--charcoal-soft)",
+    borderTopColor: "var(--cyan)",
+    borderRadius: "50%",
+    animation: "spin 0.8s linear infinite",
   },
 };
+
+// Inject keyframe animation (if not already present)
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+}

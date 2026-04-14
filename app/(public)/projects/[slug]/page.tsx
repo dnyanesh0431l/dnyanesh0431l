@@ -664,7 +664,7 @@ if (typeof document !== "undefined") {
     }
     @media (max-width: 480px) {
       .title {
-        font-size: var(--text-lg) !important; /* 24px on mobile */
+        font-size: var(--text-sm) !important; /* 24px on mobile */
       }
     }
   `;
