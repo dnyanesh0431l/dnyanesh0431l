@@ -17,8 +17,8 @@ interface ImageItem {
   title: string;
   alt: string;
   order: number;
+  // For new images not yet uploaded (only when project is new)
   file?: File;
-  isUploading?: boolean;
 }
 
 interface LinkItem {
@@ -78,7 +78,9 @@ export default function AddEditProjectPage() {
   const [featureInput, setFeatureInput] = useState("");
   const [imageTitle, setImageTitle] = useState("");
   const [imageAlt, setImageAlt] = useState("");
+  const [imageUrlInput, setImageUrlInput] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [editingImageIndex, setEditingImageIndex] = useState<number | null>(
     null,
@@ -89,10 +91,6 @@ export default function AddEditProjectPage() {
   const [fetchLoading, setFetchLoading] = useState(!isNew);
   const [activeTab, setActiveTab] = useState("basic");
   const [uploadingImage, setUploadingImage] = useState(false);
-  
-// Add missing state variables
-const [imageUrlInput, setImageUrlInput] = useState("");
-const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isNew && id) {
@@ -175,47 +173,43 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
     }));
   };
 
-  // Upload image to Firebase Storage
+  // Upload a single image to Firebase Storage
   const uploadImageToStorage = async (
     file: File,
     projectId: string,
   ): Promise<string> => {
     const timestamp = Date.now();
-    const fileName = `${projectId}/${timestamp}_${file.name}`;
+    const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const fileName = `${projectId}/${timestamp}_${safeFileName}`;
     const storageRef = ref(storage, `projects/${fileName}`);
-
     await uploadBytes(storageRef, file);
-    const downloadUrl = await getDownloadURL(storageRef);
-    return downloadUrl;
+    return await getDownloadURL(storageRef);
   };
 
-  // Handle file selection
+  // Handle file selection (preview)
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         alert("Please select an image file");
         return;
       }
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert("File size must be less than 5MB");
         return;
       }
       setSelectedFile(file);
-
-      // Preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageUrl(reader.result as string);
+        setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setImageUrlInput(""); // clear URL input when file selected
     }
   };
 
-  // Add/Upload image
-  const addImage = async () => {
+  // Add or update image (local state, no upload yet for new projects)
+  const addOrUpdateImage = () => {
     if (!imageTitle.trim()) {
       alert("Please enter an image title");
       return;
@@ -225,98 +219,69 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
       return;
     }
 
-    setUploadingImage(true);
-    setUploadProgress(0);
-
-    try {
-      let imageUrl = "";
-
-      if (selectedFile) {
-        // Upload new file
-        const tempId = isNew ? "temp" : id;
-        imageUrl = await uploadImageToStorage(selectedFile, tempId);
-      } else if (imageUrlInput && /^https?:\/\//.test(imageUrlInput)) {
-        // Use external URL
-        imageUrl = imageUrlInput;
-      } else {
-        alert("Please select an image file or provide a valid URL");
-        setUploadingImage(false);
-        return;
-      }
-
-      const newImage: ImageItem = {
-        url: imageUrl,
-        title: imageTitle.trim(),
-        alt: imageAlt.trim(),
-        order: formData.images.length,
-      };
-
-      if (editingImageIndex !== null) {
-        // Delete old image from storage if it was uploaded
-        const oldImage = formData.images[editingImageIndex];
-        if (oldImage.url && oldImage.url.includes("firebasestorage")) {
-          try {
-            const oldImageRef = ref(storage, oldImage.url);
-            await deleteObject(oldImageRef);
-          } catch (error) {
-            console.error("Error deleting old image:", error);
-          }
-        }
-
-        const updatedImages = [...formData.images];
-        updatedImages[editingImageIndex] = newImage;
-        setFormData((prev) => ({ ...prev, images: updatedImages }));
-        setEditingImageIndex(null);
-      } else {
-        setFormData((prev) => ({
-          ...prev,
-          images: [...prev.images, newImage],
-        }));
-      }
-
-      // Reset form
-      setSelectedFile(null);
-      setImageTitle("");
-      setImageAlt("");
-      setImageUrlInput("");
-      setImagePreview(null);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
-    } finally {
-      setUploadingImage(false);
-      setUploadProgress(0);
+    let imageUrl = imageUrlInput.trim();
+    if (!imageUrl && !selectedFile) {
+      alert("Please select an image file or provide a URL");
+      return;
     }
+
+    const newImage: ImageItem = {
+      url: imageUrl || "", // will be set later for file uploads
+      title: imageTitle.trim(),
+      alt: imageAlt.trim(),
+      order: formData.images.length,
+    };
+
+    if (selectedFile) {
+      // For new projects, store file; for existing, we'll upload on save
+      newImage.file = selectedFile;
+    }
+
+    if (editingImageIndex !== null) {
+      // Replace existing image
+      const updatedImages = [...formData.images];
+      updatedImages[editingImageIndex] = newImage;
+      setFormData((prev) => ({ ...prev, images: updatedImages }));
+      setEditingImageIndex(null);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, newImage],
+      }));
+    }
+
+    // Reset form
+    setSelectedFile(null);
+    setImageTitle("");
+    setImageAlt("");
+    setImageUrlInput("");
+    setImagePreview(null);
   };
 
   const editImage = (index: number) => {
-    const image = formData.images[index];
-    setImageTitle(image.title);
-    setImageAlt(image.alt);
-    setImageUrlInput(image.url);
+    const img = formData.images[index];
+    setImageTitle(img.title);
+    setImageAlt(img.alt);
+    setImageUrlInput(img.url);
     setEditingImageIndex(index);
     setSelectedFile(null);
-    setImagePreview(image.url);
+    setImagePreview(img.url);
   };
 
-  const removeImage = async (index: number) => {
-    const image = formData.images[index];
-
-    // Delete from storage if it's an uploaded image
-    if (image.url && image.url.includes("firebasestorage")) {
-      try {
-        const imageRef = ref(storage, image.url);
-        await deleteObject(imageRef);
-      } catch (error) {
-        console.error("Error deleting image from storage:", error);
-      }
+  const removeImage = (index: number) => {
+    // If image has a storage URL, we'll delete it later when saving (or now if existing)
+    const img = formData.images[index];
+    if (img.url && img.url.includes("firebasestorage") && !isNew) {
+      // Delete from storage immediately for existing projects
+      const imageRef = ref(storage, img.url);
+      deleteObject(imageRef).catch((err) =>
+        console.error("Error deleting image:", err),
+      );
     }
-
     setFormData((prev) => ({
       ...prev,
       images: prev.images.filter((_, i) => i !== index),
     }));
-
     if (editingImageIndex === index) {
       setEditingImageIndex(null);
       setSelectedFile(null);
@@ -423,44 +388,51 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
     }));
   };
 
+  // Submit handler with proper image uploads
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const projectData = {
+      let projectId = id;
+      let isNewDoc = isNew;
+
+      // If new, create document first to get an ID
+      if (isNew) {
+        const docRef = await addDoc(collection(db, "projects"), {
+          ...formData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        projectId = docRef.id;
+        isNewDoc = true;
+      }
+
+      // Process images: upload any pending files and replace URLs
+      const processedImages = await Promise.all(
+        formData.images.map(async (img) => {
+          if (img.file) {
+            // Upload new file
+            const uploadedUrl = await uploadImageToStorage(img.file, projectId);
+            return { ...img, url: uploadedUrl, file: undefined };
+          }
+          return img;
+        }),
+      );
+
+      const finalData = {
         ...formData,
+        images: processedImages,
         updatedAt: new Date(),
       };
 
-      let docRef;
-      if (isNew) {
-        docRef = await addDoc(collection(db, "projects"), {
-          ...projectData,
-          createdAt: new Date(),
+      if (isNewDoc) {
+        await setDoc(doc(db, "projects", projectId), finalData, {
+          merge: true,
         });
-
-        // Update image paths with actual document ID
-        const updatedImages = await Promise.all(
-          formData.images.map(async (img, idx) => {
-            if (img.url && img.url.includes("temp")) {
-              // Re-upload images with correct document ID
-              if (img.file) {
-                const newUrl = await uploadImageToStorage(img.file, docRef.id);
-                return { ...img, url: newUrl, file: undefined };
-              }
-            }
-            return img;
-          }),
-        );
-
-        await setDoc(
-          docRef,
-          { ...projectData, images: updatedImages },
-          { merge: true },
-        );
       } else {
-        const docRef = doc(db, "projects", id);
-        await setDoc(docRef, projectData, { merge: true });
+        await setDoc(doc(db, "projects", projectId), finalData, {
+          merge: true,
+        });
       }
 
       router.push("/Admin/projects");
@@ -691,24 +663,35 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                     <h3 style={styles.subsectionTitle}>
                       {editingImageIndex !== null
                         ? "Edit Image"
-                        : "Upload New Image"}
+                        : "Add New Image"}
                     </h3>
 
-                    {/* File Upload */}
                     <div style={styles.field}>
-                      <label style={styles.label}>Upload Image *</label>
+                      <label style={styles.label}>Image File (or URL)</label>
                       <input
                         type="file"
                         accept="image/*"
                         onChange={handleFileSelect}
                         style={styles.fileInput}
                       />
-                      <p style={styles.hint}>
-                        Supported formats: JPG, PNG, GIF, WebP (Max 5MB)
-                      </p>
+                      <p style={styles.hint}>Max 5MB. JPG, PNG, GIF, WebP.</p>
                     </div>
 
-                    {/* Image Preview */}
+                    <div style={styles.field}>
+                      <label style={styles.label}>Or Image URL</label>
+                      <input
+                        type="url"
+                        value={imageUrlInput}
+                        onChange={(e) => {
+                          setImageUrlInput(e.target.value);
+                          setSelectedFile(null);
+                          setImagePreview(e.target.value);
+                        }}
+                        placeholder="https://example.com/image.jpg"
+                        style={styles.input}
+                      />
+                    </div>
+
                     {imagePreview && (
                       <div style={styles.previewContainer}>
                         <img
@@ -726,12 +709,9 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                           type="text"
                           value={imageTitle}
                           onChange={(e) => setImageTitle(e.target.value)}
-                          placeholder="Descriptive title for the image"
+                          placeholder="Descriptive title"
                           style={styles.input}
                         />
-                        <p style={styles.hint}>
-                          Used for image caption and tooltips
-                        </p>
                       </div>
                       <div style={styles.field}>
                         <label style={styles.label}>Alt Text (SEO) *</label>
@@ -742,35 +722,18 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                           placeholder="Describe the image for screen readers"
                           style={styles.input}
                         />
-                        <p style={styles.hint}>
-                          Critical for accessibility and SEO
-                        </p>
                       </div>
                     </div>
-
-                    {uploadingImage && (
-                      <div style={styles.progressBar}>
-                        <div
-                          style={{
-                            ...styles.progressFill,
-                            width: `${uploadProgress}%`,
-                          }}
-                        />
-                      </div>
-                    )}
 
                     <div style={styles.buttonGroup}>
                       <button
                         type="button"
-                        onClick={addImage}
+                        onClick={addOrUpdateImage}
                         style={styles.primaryButton}
-                        disabled={uploadingImage}
                       >
-                        {uploadingImage
-                          ? "Uploading..."
-                          : editingImageIndex !== null
-                            ? "Update Image"
-                            : "Upload Image"}
+                        {editingImageIndex !== null
+                          ? "Update Image"
+                          : "Add Image"}
                       </button>
                       {editingImageIndex !== null && (
                         <button
@@ -843,7 +806,7 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                               type="button"
                               onClick={() => editImage(idx)}
                               style={styles.iconButton}
-                              title="Edit image"
+                              title="Edit"
                             >
                               ✏️
                             </button>
@@ -851,7 +814,7 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                               type="button"
                               onClick={() => removeImage(idx)}
                               style={styles.deleteButton}
-                              title="Delete image"
+                              title="Delete"
                             >
                               ✕
                             </button>
@@ -922,7 +885,6 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
                     <span style={styles.sectionIcon}>🔍</span>
                     <h2 style={styles.sectionTitle}>SEO Settings</h2>
                   </div>
-
                   <div style={styles.fieldGroup}>
                     <div style={styles.field}>
                       <label style={styles.label}>Meta Title</label>
@@ -1184,6 +1146,9 @@ const [imagePreview, setImagePreview] = useState<string | null>(null);
     </div>
   );
 }
+
+// Styles remain the same as your existing styles object – omitted for brevity
+// (Copy the styles object from your original code, it's unchanged)
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
@@ -1663,13 +1628,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-
-// Add these to the component
-// Add after other useState declarations:
-// const [imageUrlInput, setImageUrlInput] = useState('');
-// const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-// Add animation to global
+// Add global keyframes (unchanged)
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.textContent = `
