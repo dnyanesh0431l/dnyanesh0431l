@@ -1,4 +1,5 @@
 /* app/projects/[slug]/project.module.css */
+
 .container {
   min-height: 100vh;
   background: var(--snow);
@@ -58,11 +59,11 @@
 
 .description {
   font-size: var(--text-base);
-  opacity: 0.9;
+  line-height: 1.6;
   margin-bottom: var(--space-md);
-  line-height: 1.5;
   font-family: var(--font-body);
   color: var(--snow-soft);
+  text-align: justify;
 }
 
 .techList {
@@ -210,13 +211,125 @@
   margin-bottom: var(--space-md);
 }
 
+/* ----- ENHANCED RICH TEXT STYLES for fullDescription ----- */
 .fullDescription {
   font-size: var(--text-base);
   line-height: 1.7;
   color: var(--charcoal);
   font-family: var(--font-body);
+  text-align: justify;
 }
 
+.fullDescription p {
+  margin-bottom: var(--space-md);
+  text-align: justify;
+}
+
+.fullDescription h1,
+.fullDescription h2,
+.fullDescription h3,
+.fullDescription h4,
+.fullDescription h5,
+.fullDescription h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  color: var(--charcoal);
+  text-align: left;
+}
+
+.fullDescription h1 { font-size: var(--text-2xl); }
+.fullDescription h2 { font-size: var(--text-xl); }
+.fullDescription h3 { font-size: var(--text-lg); }
+.fullDescription h4 { font-size: var(--text-base); font-weight: 600; }
+.fullDescription h5 { font-size: var(--text-sm); font-weight: 600; }
+.fullDescription h6 { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; }
+
+.fullDescription ul,
+.fullDescription ol {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-lg);
+}
+
+.fullDescription li {
+  margin-bottom: var(--space-xs);
+  text-align: justify;
+}
+
+.fullDescription ul li {
+  list-style-type: disc;
+}
+
+.fullDescription ol li {
+  list-style-type: decimal;
+}
+
+.fullDescription a {
+  color: var(--cyan);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.fullDescription a:hover {
+  color: var(--green);
+}
+
+.fullDescription strong {
+  font-weight: 700;
+  color: var(--charcoal-dark);
+}
+
+.fullDescription em {
+  font-style: italic;
+}
+
+.fullDescription blockquote {
+  border-left: 4px solid var(--cyan);
+  padding-left: var(--space-md);
+  margin: var(--space-md) 0;
+  font-style: italic;
+  color: var(--charcoal-soft);
+}
+
+.fullDescription code {
+  background: var(--charcoal-soft);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  font-size: 0.9em;
+  color: var(--cyan);
+}
+
+.fullDescription pre {
+  background: var(--charcoal);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: var(--space-md) 0;
+}
+
+.fullDescription pre code {
+  background: none;
+  padding: 0;
+  color: var(--snow);
+}
+
+.fullDescription img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: var(--space-md) 0;
+}
+
+.fullDescription hr {
+  margin: var(--space-lg) 0;
+  border: none;
+  height: 1px;
+  background: var(--charcoal-soft);
+}
+
+/* Features grid */
 .featuresGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -234,6 +347,7 @@
   font-size: var(--text-sm);
   font-family: var(--font-body);
   color: var(--charcoal);
+  text-align: justify;
 }
 
 .featureIcon {
@@ -246,9 +360,10 @@
   line-height: 1.7;
   color: var(--charcoal);
   font-family: var(--font-body);
+  text-align: justify;
 }
 
-/* Lightbox */
+/* Lightbox (unchanged but kept for completeness) */
 .lightboxOverlay {
   position: fixed;
   top: 0;
