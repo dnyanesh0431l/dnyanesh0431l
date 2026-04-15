@@ -1,13 +1,13 @@
 export default function ClientsSection() {
   const clients = [
-    { name: "Dhanroop Seeds", logo: "/clients/Dhanroop.png" },
-    { name: "Econ Market Research", logo: "/clients/Econ.webp" },
-    { name: "Dhrubix Tech", logo: "/clients/dhrubix.jpeg" },
-    { name: "Jangid and Associates", logo: "/clients/jandalogo.png" },
-    { name: "Metricwave Insights", logo: "/clients/metricwave.png" },
-    { name: "Mira Mahila Nagri Pathsanstha", logo: "/clients/mirabank.png" },
-    { name: "MR PK Salon", logo: "/clients/ssslon.png" },
-    { name: "Wealthy Psyche", logo: "/clients/wealthy.png" },
+    { name: "Dhanroop Seeds", logo: "/Clients/Dhanroop.png" },
+    { name: "Econ Market Research", logo: "/Clients/Econ.webp" },
+    { name: "Dhrubix Tech", logo: "/Clients/dhrubix.jpeg" },
+    { name: "Jangid and Associates", logo: "/Clients/jandalogo.png" },
+    { name: "Metricwave Insights", logo: "/Clients/metricwave.png" },
+    { name: "Mira Mahila Nagri Pathsanstha", logo: "/Clients/mirabank.png" },
+    { name: "MR PK Salon", logo: "/Clients/ssslon.png" },
+    { name: "Wealthy Psyche", logo: "/Clients/wealthy.png" },
   ];
 
   // Duplicate for seamless loop
