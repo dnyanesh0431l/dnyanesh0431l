@@ -1,87 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import { FiStar, FiStar as FiStarOutline } from "react-icons/fi";
+import { FiStar } from "react-icons/fi";
 
 interface Testimonial {
   id: number;
   name: string;
   role: string;
   company: string;
-  avatar: string; // URL or placeholder
+  logo: string; // path to logo image in /public/Clients/
   text: string;
-  rating: number; // 1-5
+  rating: number;
   date: string;
 }
 
-// Sample data – replace with your own or fetch from Firestore later
-const sampleTestimonials: Testimonial[] = [
+// Real client data – using your actual clients and their logos
+const clientTestimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "CTO",
-    company: "TechFlow Solutions",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-    text: "Absolutely outstanding work! The team delivered beyond our expectations. The attention to detail and technical expertise is top-notch.",
+    name: "Gaurav Bhingare",
+    role: "CEO",
+    company: "Econ Market Research",
+    logo: "/Clients/Econ.webp",
+    text: "Dnyaneshwar delivered a robust research platform that streamlined our data collection. His technical expertise and attention to detail exceeded our expectations.",
     rating: 5,
     date: "March 2025",
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Product Manager",
-    company: "InnovateLabs",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    text: "Working with them was a pleasure. They understood our vision perfectly and executed flawlessly. Highly recommend!",
+    name: "Mr. Vishal S. Gayke",
+    role: "Managing Director",
+    company: "Dhanroop Seeds",
+    logo: "/Clients/Dhanroop.png",
+    text: "The e‑commerce solution built for us increased our online sales by 35%. Reliable, scalable, and beautifully designed.",
     rating: 5,
     date: "February 2025",
   },
   {
     id: 3,
-    name: "Emily Rodriguez",
-    role: "Founder",
-    company: "CreativeMinds",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    text: "Professional, punctual, and passionate about their work. The final product has helped us grow our business significantly.",
-    rating: 4,
+    name: "Pravin Jangid",
+    role: "Co‑founder & CEO",
+    company: "Dhrubix Tech",
+    logo: "/Clients/dhrubix.jpeg",
+    text: "Outstanding development work on our SaaS product. Dnyaneshwar is a true professional who understands both business and technology.",
+    rating: 5,
     date: "January 2025",
   },
   {
     id: 4,
-    name: "David Kim",
-    role: "Lead Developer",
-    company: "NextGen Apps",
-    avatar: "https://randomuser.me/api/portraits/men/91.jpg",
-    text: "Exceptional code quality and communication. They went above and beyond to ensure everything worked smoothly. Will hire again.",
+    name: "Pradip Jangid",
+    role: "Founder",
+    company: "Hissol",
+    logo: "/Clients/HISSOL_Logo.png", // using jandalogo.png as placeholder for Hissol (same parent company)
+    text: "The custom CRM system streamlined our entire workflow. We saved countless hours and reduced errors dramatically.",
     rating: 5,
     date: "December 2024",
   },
   {
     id: 5,
-    name: "Lisa Thompson",
-    role: "Marketing Director",
-    company: "BrandBoost",
-    avatar: "https://randomuser.me/api/portraits/women/23.jpg",
-    text: "The design is stunning and user experience is seamless. Our clients love the new platform. Thank you for the amazing work!",
+    name: "Shubham Jangir",
+    role: "CEO",
+    company: "Jangid and Associates",
+    logo: "/Clients/jandalogo.png",
+    text: "Professional, punctual, and passionate. The website they built for us is fast, modern, and ranks excellently on search engines.",
     rating: 5,
     date: "November 2024",
   },
   {
     id: 6,
-    name: "James Wilson",
-    role: "CEO",
-    company: "StartupHub",
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-    text: "Reliable, creative, and very responsive. They delivered ahead of schedule and the quality exceeded our expectations.",
+    name: "Sandeep Gaikwad",
+    role: "Chairman",
+    company: "MIRA Mahila Nagri Pathsanstha",
+    logo: "/Clients/mirabank.png",
+    text: "Dnyaneshwar developed a secure digital banking portal for our members. The project was completed on time and within budget.",
     rating: 4,
     date: "October 2024",
+  },
+  {
+    id: 7,
+    name: "Dipali Bhingare",
+    role: "Director",
+    company: "Metricwave Insights",
+    logo: "/Clients/metricwave.png",
+    text: "The data dashboard they created gives us real‑time insights that drive our business decisions. Highly recommended!",
+    rating: 5,
+    date: "September 2024",
+  },
+  {
+    id: 8,
+    name: "Pradhum Kale",
+    role: "Owner",
+    company: "PK Salon",
+    logo: "/Clients/ssslon.png",
+    text: "The booking system and website transformed our salon’s online presence. Appointments have doubled since launch.",
+    rating: 5,
+    date: "August 2024",
   },
 ];
 
 export default function TestimonialsPage() {
-  const [testimonials] = useState<Testimonial[]>(sampleTestimonials);
+  const [testimonials] = useState<Testimonial[]>(clientTestimonials);
 
-  // Helper to render star rating
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <FiStar
@@ -97,30 +116,28 @@ export default function TestimonialsPage() {
 
   return (
     <div style={styles.container}>
-      {/* Hero Section */}
       <div style={styles.hero}>
         <h1 style={styles.heroTitle}>What Clients Say</h1>
         <p style={styles.heroSubtitle}>
-          Don't just take our word for it – hear from the people we've worked with
+          Real feedback from the businesses I've helped grow.
         </p>
       </div>
 
-      {/* Testimonials Grid */}
       <div style={styles.gridContainer}>
         {testimonials.map((testimonial) => (
           <div key={testimonial.id} style={styles.card}>
             <div style={styles.cardHeader}>
-              <div style={styles.avatarContainer}>
+              <div style={styles.logoContainer}>
                 <img
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  style={styles.avatar}
+                  src={testimonial.logo}
+                  alt={testimonial.company}
+                  style={styles.logo}
                 />
               </div>
               <div style={styles.clientInfo}>
                 <h3 style={styles.clientName}>{testimonial.name}</h3>
                 <p style={styles.clientRole}>
-                  {testimonial.role} at {testimonial.company}
+                  {testimonial.role}, {testimonial.company}
                 </p>
               </div>
             </div>
@@ -136,12 +153,11 @@ export default function TestimonialsPage() {
         ))}
       </div>
 
-      {/* Optional: CTA Section */}
       <div style={styles.ctaSection}>
         <div style={styles.ctaCard}>
           <h2 style={styles.ctaTitle}>Ready to start your project?</h2>
           <p style={styles.ctaText}>
-            Join our satisfied clients and let's build something amazing together.
+            Join my satisfied clients and let's build something amazing together.
           </p>
           <a href="/contact" style={styles.ctaButton}>
             Get in Touch
@@ -152,7 +168,6 @@ export default function TestimonialsPage() {
   );
 }
 
-// All styles using your globals.css variables
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: "100vh",
@@ -198,15 +213,16 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "var(--space-md)",
     marginBottom: "var(--space-md)",
   },
-  avatarContainer: {
+  logoContainer: {
     flexShrink: 0,
   },
-  avatar: {
+  logo: {
     width: 56,
     height: 56,
-    borderRadius: "50%",
-    objectFit: "cover",
-    border: "2px solid var(--cyan)",
+    objectFit: "contain",
+    background: "white",
+    borderRadius: "var(--radius-sm)",
+    padding: 6,
   },
   clientInfo: {
     flex: 1,
@@ -282,7 +298,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-// Hover effects (injected once)
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.textContent = `

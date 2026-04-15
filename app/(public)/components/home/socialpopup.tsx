@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { FaLinkedin, FaInstagram, FaGithub } from 'react-icons/fa';
+import { useEffect, useRef, useState } from "react";
+import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 interface SocialLink {
   name: string;
@@ -18,22 +18,26 @@ const SocialPopup: React.FC = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   // ===== SOCIAL LINKS CONFIGURATION =====
-  // Replace the URLs with your actual profile links.
   const socialLinks: SocialLink[] = [
     {
-      name: 'LinkedIn',
+      name: "WhatsApp",
+      icon: <FaWhatsapp />,
+      url: "https://wa.me/918788676265", // International format: 91 8788676265
+    },
+    {
+      name: "LinkedIn",
       icon: <FaLinkedin />,
-      url: 'https://linkedin.com/in/yourusername',
+      url: "https://www.linkedin.com/in/dnyaneshwar-ingle-9b7736284",
     },
     {
-      name: 'Instagram',
+      name: "Instagram",
       icon: <FaInstagram />,
-      url: 'https://instagram.com/yourusername',
+      url: "https://www.instagram.com/dnyanesh0431l",
     },
     {
-      name: 'GitHub',
+      name: "GitHub",
       icon: <FaGithub />,
-      url: 'https://github.com/yourusername',
+      url: "https://github.com/dnyanesh0431l",
     },
   ];
 
@@ -43,30 +47,33 @@ const SocialPopup: React.FC = () => {
   // Close popup when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
         closePopup();
       }
     };
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
 
   // Close popup on ESC key press
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         closePopup();
       }
     };
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
     }
     return () => {
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen]);
 
@@ -86,7 +93,7 @@ const SocialPopup: React.FC = () => {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={closePopup} // Close popup after clicking a link
+                onClick={closePopup}
                 className="flex items-center gap-3 text-muted hover:text-cyan transition-colors duration-200 text-lg"
               >
                 <span className="text-2xl">{link.icon}</span>

@@ -6,56 +6,56 @@ import { useEffect, useRef } from "react";
 
 const journeySteps = [
   {
-    year: "2018–2019",
+    year: "2025 (Jan-june)",
     title: "Early Execution",
     desc: "Delivered 25+ final-year projects (diploma + degree) while building a custom software project for a bank. Gained real-world experience and technical confidence.",
     image:
       "https://i.pinimg.com/1200x/75/70/af/7570af8b0ac631522b5a700cf9d0d1ba.jpg",
   },
   {
-    year: "2019–2020",
+    year: "2025 (July-August)",
     title: "First Product Experiments",
     desc: "Built restaurant software. First version failed, so I rebuilt it. One restaurant still uses it today. Learned that resilience beats initial success.",
     image:
       "https://i.pinimg.com/736x/50/4c/94/504c9430631cde54eb8f5f15e24273c2.jpg",
   },
   {
-    year: "2020",
+    year: "2025 (Sep)",
     title: "Understanding the Market",
     desc: "Registered ByteSolve Solutions as a sole proprietorship — a turning point that gave me credibility and helped clients trust a young developer.",
     image:
       "https://i.pinimg.com/1200x/75/70/af/7570af8b0ac631522b5a700cf9d0d1ba.jpg",
   },
   {
-    year: "2021",
+    year: "2025 (Oct)",
     title: "White-Label Partner",
     desc: "Became a white-label developer for dropshippers and agencies, building software under their brands. Learned to scale by empowering others.",
     image:
       "https://i.pinimg.com/736x/a8/58/47/a85847abccfa9eb0f3610318759aa0ff.jpg",
   },
   {
-    year: "2022",
+    year: "2025 (Nov)",
     title: "Industry Software",
     desc: "Developed salon management software deployed to 2 salons — still used today. Proved ability to create practical solutions for real operations.",
     image:
       "https://i.pinimg.com/736x/50/4c/94/504c9430631cde54eb8f5f15e24273c2.jpg",
   },
   {
-    year: "2022–2023",
+    year: "2025 (Dec)–2026 (Feb)",
     title: "Client Expansion",
     desc: "Worked with Econ Market Research, Jangid and Associate, Dhanrop Seeds, Hissol.in and Hissol.com — across market research, accounting, agriculture, and e-commerce.",
     image:
       "https://i.pinimg.com/1200x/75/70/af/7570af8b0ac631522b5a700cf9d0d1ba.jpg",
   },
   {
-    year: "2023",
+    year: "2026 (March)",
     title: "Slowdown & New Vision",
     desc: "Faced periods without new clients. Instead of waiting, I built Wealthy Psyche — a platform for premium psychological and philosophical archives.",
     image:
       "https://i.pinimg.com/736x/a8/58/47/a85847abccfa9eb0f3610318759aa0ff.jpg",
   },
   {
-    year: "2024",
+    year: "2026---",
     title: "The Present",
     desc: "Running ByteSolve Solutions for client work and Wealthy Psyche as a content platform. Combining product development, white-label partnerships, and full-stack expertise.",
     image:
