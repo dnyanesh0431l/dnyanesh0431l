@@ -8,6 +8,7 @@ export default function ClientsSection() {
     { name: "Mira Mahila Nagri Pathsanstha", logo: "/Clients/mirabank.png" },
     { name: "MR PK Salon", logo: "/Clients/ssslon.png" },
     { name: "Wealthy Psyche", logo: "/Clients/wealthy.png" },
+    { name: "HISSOL", logo: "/Clients/HISSOL_Logo.png"}
   ];
 
   // Duplicate for seamless loop
