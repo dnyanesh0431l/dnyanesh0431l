@@ -1,18 +1,23 @@
 export default function ClientsSection() {
   const clients = [
-    { name: "Econ Market Research", logo: "/clients/techcorp.svg" },
-    { name: "InnovateLabs", logo: "/clients/innovatelabs.svg" },
-    { name: "ByteSolve", logo: "/clients/bytesolve.svg" },
-    { name: "FutureStack", logo: "/clients/futurestack.svg" },
+    { name: "Dhanroop Seeds", logo: "/clients/Dhanroop.png" },
+    { name: "Econ Market Research", logo: "/clients/Econ.webp" },
+    { name: "Dhrubix Tech", logo: "/clients/dhrubix.jpeg" },
+    { name: "Jangid and Associates", logo: "/clients/jandalogo.png" },
+    { name: "Metricwave Insights", logo: "/clients/metricwave.png" },
+    { name: "Mira Mahila Nagri Pathsanstha", logo: "/clients/mirabank.png" },
+    { name: "MR PK Salon", logo: "/clients/ssslon.png" },
+    { name: "Wealthy Psyche", logo: "/clients/wealthy.png" },
   ];
 
   return (
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <h2 style={styles.title}>Trusted by Leading Companies</h2>
+          <span style={styles.tag}>Our Clients</span>
+          <h2 style={styles.title}>Companies I've Worked With</h2>
           <p style={styles.subtitle}>
-            We've helped businesses of all sizes scale their digital presence.
+            Trusted by businesses across industries.
           </p>
         </div>
         <div style={styles.grid}>

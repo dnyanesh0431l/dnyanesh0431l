@@ -4,50 +4,25 @@ export default function ServicesSection() {
   const services = [
     {
       title: "Web Development",
-      description:
-        "Modern, responsive websites and web apps using cutting-edge technologies.",
+      description: "Modern, responsive websites and web applications.",
       icon: FiCode,
       color: "var(--cyan)",
-      technologies: [
-        "Next.js",
-        "React",
-        "Node.js",
-        "PostgreSQL",
-        "Firebase",
-        "Tailwind CSS",
-        "TypeScript",
-        "Docker",
-        "Hostinger",
-      ],
+      techs: ["Next.js", "React", "Node.js", "Tailwind CSS", "TypeScript"],
     },
     {
       title: "App Development",
       description: "Native and cross-platform mobile apps for iOS and Android.",
       icon: FiSmartphone,
       color: "#8b5cf6",
-      technologies: [
-        "Flutter",
-        "React Native",
-        "Firebase",
-        "Node.js",
-        "TypeScript",
-        "Docker",
-      ],
+      techs: ["Flutter", "Dart"],
     },
     {
       title: "Custom Software",
       description:
-        "Tailored software solutions to automate and scale your business processes.",
+        "Tailored software solutions to automate and scale your business.",
       icon: FiServer,
       color: "var(--green)",
-      technologies: [
-        "Node.js",
-        "PostgreSQL",
-        "Firebase",
-        "TypeScript",
-        "Docker",
-        "Hostinger",
-      ],
+      techs: ["Node.js", "PostgreSQL", "Docker", "TypeScript"],
     },
   ];
 
@@ -55,16 +30,14 @@ export default function ServicesSection() {
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <span style={styles.tag}>What I Do</span>
-          <h2 style={styles.title}>Development Services</h2>
-          <p style={styles.subtitle}>
-            End-to-end solutions tailored to your business needs.
-          </p>
+          <span style={styles.tag}>Services</span>
+          <h2 style={styles.title}>What I Do</h2>
+          <p style={styles.subtitle}>Simple, scalable, and modern solutions.</p>
         </div>
 
-        <div style={styles.servicesGrid}>
+        <div style={styles.grid}>
           {services.map((service) => (
-            <div key={service.title} style={styles.serviceCard}>
+            <div key={service.title} style={styles.card}>
               <div
                 style={{
                   ...styles.icon,
@@ -72,12 +45,12 @@ export default function ServicesSection() {
                   color: service.color,
                 }}
               >
-                <service.icon size={32} />
+                <service.icon size={28} />
               </div>
-              <h3 style={styles.serviceTitle}>{service.title}</h3>
-              <p style={styles.serviceDesc}>{service.description}</p>
-              <div style={styles.techList}>
-                {service.technologies.map((tech) => (
+              <h3 style={styles.cardTitle}>{service.title}</h3>
+              <p style={styles.cardDesc}>{service.description}</p>
+              <div style={styles.techWrapper}>
+                {service.techs.map((tech) => (
                   <span key={tech} style={styles.techBadge}>
                     {tech}
                   </span>
@@ -95,7 +68,6 @@ const styles: Record<string, React.CSSProperties> = {
   section: {
     padding: "var(--space-2xl) var(--space-md)",
     background: "var(--charcoal-soft)",
-    color: "var(--snow)",
   },
   container: {
     maxWidth: "1200px",
@@ -122,67 +94,60 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 700,
     fontFamily: "var(--font-heading)",
     color: "var(--snow)",
-    marginBottom: "var(--space-md)",
+    marginBottom: "var(--space-sm)",
   },
   subtitle: {
     fontSize: "var(--text-base)",
     color: "var(--snow-soft)",
-    maxWidth: "600px",
+    maxWidth: "500px",
     margin: "0 auto",
-    lineHeight: 1.6,
   },
-  servicesGrid: {
+  grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: "var(--space-xl)",
   },
-  serviceCard: {
-    background: "rgba(13, 61, 71, 0.6)",
-    backdropFilter: "blur(10px)",
+  card: {
+    background: "var(--charcoal)",
     borderRadius: "var(--radius-lg)",
     padding: "var(--space-xl) var(--space-lg)",
-    transition: "all 0.3s ease",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    display: "flex",
-    flexDirection: "column",
+    transition: "transform 0.2s, box-shadow 0.2s",
+    border: "1px solid rgba(255,255,255,0.05)",
   },
   icon: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "64px",
-    height: "64px",
+    width: "56px",
+    height: "56px",
     borderRadius: "var(--radius-md)",
     marginBottom: "var(--space-lg)",
-    transition: "transform 0.3s",
   },
-  serviceTitle: {
+  cardTitle: {
     fontSize: "var(--text-xl)",
     fontWeight: 700,
-    marginBottom: "var(--space-md)",
     fontFamily: "var(--font-heading)",
     color: "var(--snow)",
+    marginBottom: "var(--space-sm)",
   },
-  serviceDesc: {
+  cardDesc: {
     fontSize: "var(--text-sm)",
-    lineHeight: 1.6,
     color: "var(--snow-soft)",
-    marginBottom: "var(--space-lg)",
+    lineHeight: 1.5,
+    marginBottom: "var(--space-md)",
   },
-  techList: {
+  techWrapper: {
     display: "flex",
     flexWrap: "wrap",
     gap: "var(--space-sm)",
-    marginTop: "auto",
+    marginTop: "var(--space-md)",
   },
   techBadge: {
-    background: "var(--charcoal)",
+    background: "rgba(0, 229, 255, 0.1)",
     padding: "4px 12px",
     borderRadius: "20px",
-    fontSize: "11px",
-    fontWeight: 500,
+    fontSize: "12px",
     color: "var(--cyan)",
     fontFamily: "var(--font-body)",
-    letterSpacing: "0.3px",
   },
 };
