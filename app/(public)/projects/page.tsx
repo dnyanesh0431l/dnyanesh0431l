@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FiArrowRight, FiExternalLink, FiGithub } from "react-icons/fi";
 import styles from "./projects.module.css";
 
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const revalidate = 6000; // ISR: revalidate every 60 seconds
 
 export default async function ProjectsPage() {
   const projects = await getProjects();
