@@ -7,21 +7,21 @@ export default function ServicesSection() {
       description:
         "Modern, responsive websites and web apps using React, Next.js, and cutting-edge tech.",
       icon: FiCode,
-      color: "#0ea5e9",
+      color: "var(--cyan)",
     },
     {
       title: "App Development",
       description:
         "Native and cross-platform mobile apps for iOS and Android with React Native & Flutter.",
       icon: FiSmartphone,
-      color: "#8b5cf6",
+      color: "#8b5cf6", // keep as custom or replace with theme
     },
     {
       title: "Custom Software",
       description:
         "Tailored software solutions to automate and scale your business processes efficiently.",
       icon: FiServer,
-      color: "#10b981",
+      color: "var(--green)",
     },
     {
       title: "Cloud Solutions",
@@ -35,7 +35,7 @@ export default function ServicesSection() {
       description:
         "Protect your digital assets with advanced security audits and implementation.",
       icon: FiShield,
-      color: "#ef4444",
+      color: "var(--red)",
     },
     {
       title: "Performance Optimization",
@@ -50,9 +50,7 @@ export default function ServicesSection() {
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <span style={{ ...styles.tag, background: "rgba(255,255,255,0.1)", color: "#38bdf8" }}>
-            What I Offer
-          </span>
+          <span style={styles.tag}>What I Offer</span>
           <h2 style={styles.title}>Comprehensive Development Services</h2>
           <p style={styles.subtitle}>
             End-to-end solutions to bring your ideas from concept to reality.
@@ -81,40 +79,42 @@ export default function ServicesSection() {
   );
 }
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   section: {
-    padding: "80px 20px",
-    background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-    color: "white",
+    padding: "var(--space-2xl) var(--space-md)",
+    background: "var(--charcoal-soft)",
+    color: "var(--snow)",
   },
   container: {
     maxWidth: "1200px",
     margin: "0 auto",
   },
   header: {
-    textAlign: "center" as const,
-    marginBottom: "60px",
+    textAlign: "center",
+    marginBottom: "var(--space-xl)",
   },
   tag: {
     display: "inline-block",
-    fontSize: "14px",
+    fontSize: "var(--text-sm)",
     fontWeight: 600,
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "2px",
+    background: "rgba(255,255,255,0.1)",
+    color: "var(--cyan)",
     padding: "6px 14px",
-    borderRadius: "30px",
-    marginBottom: "16px",
+    borderRadius: "var(--radius-md)",
+    marginBottom: "var(--space-md)",
   },
   title: {
-    fontSize: "36px",
+    fontSize: "var(--text-2xl)",
     fontWeight: 700,
-    fontFamily: "var(--font-heading, 'Inter', sans-serif)",
-    color: "white",
-    marginBottom: "16px",
+    fontFamily: "var(--font-heading)",
+    color: "var(--snow)",
+    marginBottom: "var(--space-md)",
   },
   subtitle: {
-    fontSize: "18px",
-    color: "#cbd5e1",
+    fontSize: "var(--text-base)",
+    color: "var(--snow-soft)",
     maxWidth: "600px",
     margin: "0 auto",
     lineHeight: 1.6,
@@ -122,17 +122,17 @@ const styles = {
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-    gap: "32px",
+    gap: "var(--space-xl)",
     marginTop: "20px",
   },
   card: {
-    background: "rgba(255, 255, 255, 0.05)",
+    background: "rgba(13, 61, 71, 0.6)", // var(--charcoal) with opacity
     backdropFilter: "blur(10px)",
-    borderRadius: "24px",
-    padding: "32px 28px",
+    borderRadius: "var(--radius-lg)",
+    padding: "var(--space-xl) var(--space-lg)",
     transition: "all 0.4s ease",
     border: "1px solid rgba(255, 255, 255, 0.1)",
-    position: "relative" as const,
+    position: "relative",
     overflow: "hidden",
     cursor: "pointer",
   },
@@ -142,24 +142,25 @@ const styles = {
     justifyContent: "center",
     width: "64px",
     height: "64px",
-    borderRadius: "20px",
-    marginBottom: "24px",
+    borderRadius: "var(--radius-md)",
+    marginBottom: "var(--space-lg)",
     transition: "transform 0.3s",
   },
   cardTitle: {
-    fontSize: "22px",
+    fontSize: "var(--text-xl)",
     fontWeight: 700,
-    marginBottom: "16px",
-    fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+    marginBottom: "var(--space-md)",
+    fontFamily: "var(--font-heading)",
+    color: "var(--snow)",
   },
   cardDesc: {
-    fontSize: "15px",
+    fontSize: "var(--text-sm)",
     lineHeight: 1.6,
-    color: "#cbd5e1",
-    marginBottom: "20px",
+    color: "var(--snow-soft)",
+    marginBottom: "var(--space-md)",
   },
   hoverLine: {
-    position: "absolute" as const,
+    position: "absolute",
     bottom: 0,
     left: 0,
     width: "0%",
