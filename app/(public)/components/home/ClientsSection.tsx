@@ -1,6 +1,6 @@
 export default function ClientsSection() {
   const clients = [
-    { name: "TechCorp", logo: "/clients/techcorp.svg" },
+    { name: "Econ Market Research", logo: "/clients/techcorp.svg" },
     { name: "InnovateLabs", logo: "/clients/innovatelabs.svg" },
     { name: "ByteSolve", logo: "/clients/bytesolve.svg" },
     { name: "FutureStack", logo: "/clients/futurestack.svg" },
@@ -10,7 +10,6 @@ export default function ClientsSection() {
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <span style={styles.tag}>Our Partners</span>
           <h2 style={styles.title}>Trusted by Leading Companies</h2>
           <p style={styles.subtitle}>
             We've helped businesses of all sizes scale their digital presence.

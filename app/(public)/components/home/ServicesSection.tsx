@@ -1,48 +1,53 @@
-import { FiCode, FiSmartphone, FiServer, FiCloud, FiShield, FiZap } from "react-icons/fi";
+import { FiCode, FiServer, FiSmartphone } from "react-icons/fi";
 
 export default function ServicesSection() {
   const services = [
     {
       title: "Web Development",
       description:
-        "Modern, responsive websites and web apps using React, Next.js, and cutting-edge tech.",
+        "Modern, responsive websites and web apps using cutting-edge technologies.",
       icon: FiCode,
       color: "var(--cyan)",
+      technologies: [
+        "Next.js",
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Firebase",
+        "Tailwind CSS",
+        "TypeScript",
+        "Docker",
+        "Hostinger",
+      ],
     },
     {
       title: "App Development",
-      description:
-        "Native and cross-platform mobile apps for iOS and Android with React Native & Flutter.",
+      description: "Native and cross-platform mobile apps for iOS and Android.",
       icon: FiSmartphone,
-      color: "#8b5cf6", // keep as custom or replace with theme
+      color: "#8b5cf6",
+      technologies: [
+        "Flutter",
+        "React Native",
+        "Firebase",
+        "Node.js",
+        "TypeScript",
+        "Docker",
+      ],
     },
     {
       title: "Custom Software",
       description:
-        "Tailored software solutions to automate and scale your business processes efficiently.",
+        "Tailored software solutions to automate and scale your business processes.",
       icon: FiServer,
       color: "var(--green)",
-    },
-    {
-      title: "Cloud Solutions",
-      description:
-        "Scalable cloud architecture, deployment, and DevOps for your applications.",
-      icon: FiCloud,
-      color: "#f59e0b",
-    },
-    {
-      title: "Cybersecurity",
-      description:
-        "Protect your digital assets with advanced security audits and implementation.",
-      icon: FiShield,
-      color: "var(--red)",
-    },
-    {
-      title: "Performance Optimization",
-      description:
-        "Speed up your applications with advanced caching, code splitting, and monitoring.",
-      icon: FiZap,
-      color: "#ec4899",
+      technologies: [
+        "Node.js",
+        "PostgreSQL",
+        "Firebase",
+        "TypeScript",
+        "Docker",
+        "Hostinger",
+      ],
     },
   ];
 
@@ -50,15 +55,16 @@ export default function ServicesSection() {
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <span style={styles.tag}>What I Offer</span>
-          <h2 style={styles.title}>Comprehensive Development Services</h2>
+          <span style={styles.tag}>What I Do</span>
+          <h2 style={styles.title}>Development Services</h2>
           <p style={styles.subtitle}>
-            End-to-end solutions to bring your ideas from concept to reality.
+            End-to-end solutions tailored to your business needs.
           </p>
         </div>
-        <div style={styles.grid}>
+
+        <div style={styles.servicesGrid}>
           {services.map((service) => (
-            <div key={service.title} style={styles.card}>
+            <div key={service.title} style={styles.serviceCard}>
               <div
                 style={{
                   ...styles.icon,
@@ -66,11 +72,17 @@ export default function ServicesSection() {
                   color: service.color,
                 }}
               >
-                <service.icon size={28} />
+                <service.icon size={32} />
               </div>
-              <h3 style={styles.cardTitle}>{service.title}</h3>
-              <p style={styles.cardDesc}>{service.description}</p>
-              <div style={{ ...styles.hoverLine, backgroundColor: service.color }} />
+              <h3 style={styles.serviceTitle}>{service.title}</h3>
+              <p style={styles.serviceDesc}>{service.description}</p>
+              <div style={styles.techList}>
+                {service.technologies.map((tech) => (
+                  <span key={tech} style={styles.techBadge}>
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -119,22 +131,20 @@ const styles: Record<string, React.CSSProperties> = {
     margin: "0 auto",
     lineHeight: 1.6,
   },
-  grid: {
+  servicesGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
     gap: "var(--space-xl)",
-    marginTop: "20px",
   },
-  card: {
-    background: "rgba(13, 61, 71, 0.6)", // var(--charcoal) with opacity
+  serviceCard: {
+    background: "rgba(13, 61, 71, 0.6)",
     backdropFilter: "blur(10px)",
     borderRadius: "var(--radius-lg)",
     padding: "var(--space-xl) var(--space-lg)",
-    transition: "all 0.4s ease",
+    transition: "all 0.3s ease",
     border: "1px solid rgba(255, 255, 255, 0.1)",
-    position: "relative",
-    overflow: "hidden",
-    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
   },
   icon: {
     display: "inline-flex",
@@ -146,25 +156,33 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "var(--space-lg)",
     transition: "transform 0.3s",
   },
-  cardTitle: {
+  serviceTitle: {
     fontSize: "var(--text-xl)",
     fontWeight: 700,
     marginBottom: "var(--space-md)",
     fontFamily: "var(--font-heading)",
     color: "var(--snow)",
   },
-  cardDesc: {
+  serviceDesc: {
     fontSize: "var(--text-sm)",
     lineHeight: 1.6,
     color: "var(--snow-soft)",
-    marginBottom: "var(--space-md)",
+    marginBottom: "var(--space-lg)",
   },
-  hoverLine: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "0%",
-    height: "4px",
-    transition: "width 0.4s ease",
+  techList: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "var(--space-sm)",
+    marginTop: "auto",
+  },
+  techBadge: {
+    background: "var(--charcoal)",
+    padding: "4px 12px",
+    borderRadius: "20px",
+    fontSize: "11px",
+    fontWeight: 500,
+    color: "var(--cyan)",
+    fontFamily: "var(--font-body)",
+    letterSpacing: "0.3px",
   },
 };
