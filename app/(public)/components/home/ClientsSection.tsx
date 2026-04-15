@@ -10,24 +10,33 @@ export default function ClientsSection() {
     { name: "Wealthy Psyche", logo: "/clients/wealthy.png" },
   ];
 
+  // Duplicate for seamless loop
+  const allClients = [...clients, ...clients];
+
   return (
     <section style={styles.section}>
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <span style={styles.tag}>Our Clients</span>
-          <h2 style={styles.title}>Companies I've Worked With</h2>
-          <p style={styles.subtitle}>
-            Trusted by businesses across industries.
-          </p>
-        </div>
-        <div style={styles.grid}>
-          {clients.map((client) => (
-            <div key={client.name} style={styles.card}>
-              <img src={client.logo} alt={client.name} style={styles.image} />
+      <div style={styles.header}>
+        <h2 style={styles.title}>Companies I've Worked With</h2>
+        <p style={styles.subtitle}>Trusted by businesses across industries</p>
+      </div>
+
+      <div style={styles.marqueeWrapper}>
+        <div style={styles.marqueeTrack}>
+          {allClients.map((client, idx) => (
+            <div key={`${client.name}-${idx}`} style={styles.clientItem}>
+              <img src={client.logo} alt={client.name} style={styles.logo} />
+              <span style={styles.clientName}>{client.name}</span>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }
@@ -36,65 +45,58 @@ const styles: Record<string, React.CSSProperties> = {
   section: {
     padding: "var(--space-2xl) var(--space-md)",
     background: "var(--snow)",
-  },
-  container: {
-    maxWidth: "1200px",
-    margin: "0 auto",
+    overflow: "hidden",
   },
   header: {
     textAlign: "center",
     marginBottom: "var(--space-xl)",
-  },
-  tag: {
-    display: "inline-block",
-    fontSize: "var(--text-sm)",
-    fontWeight: 600,
-    textTransform: "uppercase",
-    letterSpacing: "2px",
-    color: "var(--cyan)",
-    background: "rgba(0, 229, 255, 0.1)",
-    padding: "6px 14px",
-    borderRadius: "var(--radius-md)",
-    marginBottom: "var(--space-md)",
   },
   title: {
     fontSize: "var(--text-2xl)",
     fontWeight: 700,
     fontFamily: "var(--font-heading)",
     color: "var(--charcoal)",
-    marginBottom: "var(--space-md)",
+    marginBottom: "var(--space-sm)",
   },
   subtitle: {
     fontSize: "var(--text-base)",
     color: "var(--charcoal-soft)",
     maxWidth: "600px",
     margin: "0 auto",
-    lineHeight: 1.6,
   },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-    gap: "var(--space-xl)",
-    alignItems: "center",
-    justifyItems: "center",
-  },
-  card: {
-    background: "var(--snow)",
-    borderRadius: "var(--radius-lg)",
-    padding: "var(--space-lg) var(--space-md)",
-    textAlign: "center",
-    transition: "all 0.3s ease",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
-    border: "1px solid var(--charcoal-soft)",
+  marqueeWrapper: {
     width: "100%",
-    cursor: "pointer",
+    overflow: "hidden",
+    position: "relative" as const,
   },
-  image: {
-    maxWidth: "120px",
-    maxHeight: "60px",
-    objectFit: "contain",
+  marqueeTrack: {
+    display: "flex",
+    width: "fit-content",
+    animation: "marquee 30s linear infinite",
+    gap: "var(--space-xl)",
+    padding: "var(--space-md) 0",
+  },
+  clientItem: {
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    gap: "var(--space-sm)",
+    flexShrink: 0,
+    minWidth: "140px",
+  },
+  logo: {
+    maxWidth: "100px",
+    maxHeight: "50px",
+    objectFit: "contain" as const,
     filter: "grayscale(0.2)",
-    opacity: 0.7,
-    transition: "all 0.3s",
+    opacity: 0.8,
+    transition: "all 0.2s",
+  },
+  clientName: {
+    fontSize: "var(--text-sm)",
+    color: "var(--charcoal)",
+    fontFamily: "var(--font-body)",
+    textAlign: "center" as const,
+    whiteSpace: "nowrap" as const,
   },
 };
