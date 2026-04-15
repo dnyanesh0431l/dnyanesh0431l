@@ -267,18 +267,7 @@ export default function Hero() {
               opacity: 0.6,
             }}
           >
-            {["Brand A", "Brand B", "Brand C"].map((brand) => (
-              <span
-                key={brand}
-                style={{
-                  fontSize: "var(--text-xs)",
-                  color: "var(--snow-soft)",
-                  fontWeight: 500,
-                }}
-              >
-                {brand}
-              </span>
-            ))}
+          
           </div>
         </div>
       </div>
