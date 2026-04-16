@@ -7,8 +7,11 @@ import {
   FiShield, 
   FiZap, 
   FiUsers, 
-  FiCheckCircle,
-  FiArrowRight 
+  FiArrowRight,
+  FiAward,
+  FiClock,
+  FiLock,
+  FiTrendingUp
 } from "react-icons/fi";
 
 export default function WhiteLabelPage() {
@@ -51,6 +54,33 @@ export default function WhiteLabelPage() {
     },
   ];
 
+  const benefits = [
+    {
+      title: "100% White‑Label",
+      description: "No credit or branding – your clients see only you.",
+      icon: FiAward,
+      color: "var(--cyan)",
+    },
+    {
+      title: "Fast Turnaround",
+      description: "Dedicated teams that deliver on time, every time.",
+      icon: FiClock,
+      color: "#f59e0b",
+    },
+    {
+      title: "NDA Protected",
+      description: "Full confidentiality and non‑disclosure agreements.",
+      icon: FiLock,
+      color: "#ef4444",
+    },
+    {
+      title: "Competitive Margins",
+      description: "High‑quality work at rates that leave you healthy profit.",
+      icon: FiTrendingUp,
+      color: "var(--green)",
+    },
+  ];
+
   return (
     <div style={styles.container}>
       {/* Hero */}
@@ -79,26 +109,15 @@ export default function WhiteLabelPage() {
           </p>
         </div>
         <div style={styles.benefitsGrid}>
-          <div style={styles.benefitCard}>
-            <div style={styles.benefitIcon}>🚀</div>
-            <h3 style={styles.benefitCardTitle}>100% White‑Label</h3>
-            <p style={styles.benefitCardText}>No credit or branding – your clients see only you.</p>
-          </div>
-          <div style={styles.benefitCard}>
-            <div style={styles.benefitIcon}>⚡</div>
-            <h3 style={styles.benefitCardTitle}>Fast Turnaround</h3>
-            <p style={styles.benefitCardText}>Dedicated teams that deliver on time, every time.</p>
-          </div>
-          <div style={styles.benefitCard}>
-            <div style={styles.benefitIcon}>🔒</div>
-            <h3 style={styles.benefitCardTitle}>NDA Protected</h3>
-            <p style={styles.benefitCardText}>Full confidentiality and non‑disclosure agreements.</p>
-          </div>
-          <div style={styles.benefitCard}>
-            <div style={styles.benefitIcon}>💰</div>
-            <h3 style={styles.benefitCardTitle}>Competitive Margins</h3>
-            <p style={styles.benefitCardText}>High‑quality work at rates that leave you healthy profit.</p>
-          </div>
+          {benefits.map((benefit) => (
+            <div key={benefit.title} style={styles.benefitCard}>
+              <div style={{ ...styles.benefitIcon, color: benefit.color }}>
+                <benefit.icon size={32} />
+              </div>
+              <h3 style={styles.benefitCardTitle}>{benefit.title}</h3>
+              <p style={styles.benefitCardText}>{benefit.description}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -269,7 +288,9 @@ const styles: Record<string, React.CSSProperties> = {
     border: "1px solid var(--charcoal-soft)",
   },
   benefitIcon: {
-    fontSize: "40px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: "16px",
   },
   benefitCardTitle: {
