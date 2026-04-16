@@ -209,7 +209,7 @@ export default function AddEditProjectPage() {
   };
 
   // Add or update image (local state, no upload yet for new projects)
-  const addOrUpdateImage = () => {
+  const addOrUpdateImage = async () => {
     if (!imageTitle.trim()) {
       alert("Please enter an image title");
       return;
@@ -219,38 +219,84 @@ export default function AddEditProjectPage() {
       return;
     }
 
-    let imageUrl = imageUrlInput.trim();
-    if (!imageUrl && !selectedFile) {
-      alert("Please select an image file or provide a URL");
+    // If editing existing image
+    if (editingImageIndex !== null) {
+      const updatedImages = [...formData.images];
+      updatedImages[editingImageIndex] = {
+        ...updatedImages[editingImageIndex],
+        title: imageTitle.trim(),
+        alt: imageAlt.trim(),
+      };
+      setFormData((prev) => ({ ...prev, images: updatedImages }));
+      resetImageForm();
       return;
     }
 
-    const newImage: ImageItem = {
-      url: imageUrl || "", // will be set later for file uploads
-      title: imageTitle.trim(),
-      alt: imageAlt.trim(),
-      order: formData.images.length,
-    };
-
+    // New image: either from file or URL
     if (selectedFile) {
-      // For new projects, store file; for existing, we'll upload on save
-      newImage.file = selectedFile;
-    }
-
-    if (editingImageIndex !== null) {
-      // Replace existing image
-      const updatedImages = [...formData.images];
-      updatedImages[editingImageIndex] = newImage;
-      setFormData((prev) => ({ ...prev, images: updatedImages }));
-      setEditingImageIndex(null);
-    } else {
+      // Upload immediately to Storage
+      setUploadingImage(true);
+      try {
+        // For new projects without an ID yet, use a temporary ID or upload after project creation?
+        // Better: if isNew, we can't upload because we need a project folder. So we still queue.
+        // But you want immediate upload. We'll use a temporary folder or upload after project ID exists.
+        // Simplest: for existing projects, upload now; for new projects, still queue.
+        if (!isNew && id) {
+          const uploadedUrl = await uploadImageToStorage(selectedFile, id);
+          const newImage: ImageItem = {
+            url: uploadedUrl,
+            title: imageTitle.trim(),
+            alt: imageAlt.trim(),
+            order: formData.images.length,
+          };
+          setFormData((prev) => ({
+            ...prev,
+            images: [...prev.images, newImage],
+          }));
+          resetImageForm();
+          alert("Image uploaded successfully!");
+        } else {
+          // For new projects, queue the file (will upload on final save)
+          const newImage: ImageItem = {
+            url: "",
+            title: imageTitle.trim(),
+            alt: imageAlt.trim(),
+            order: formData.images.length,
+            file: selectedFile,
+          };
+          setFormData((prev) => ({
+            ...prev,
+            images: [...prev.images, newImage],
+          }));
+          resetImageForm();
+          alert("Image queued – will be uploaded when you save the project.");
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        alert("Upload failed. Check console.");
+      } finally {
+        setUploadingImage(false);
+      }
+    } else if (imageUrlInput.trim()) {
+      // Add from URL
+      const newImage: ImageItem = {
+        url: imageUrlInput.trim(),
+        title: imageTitle.trim(),
+        alt: imageAlt.trim(),
+        order: formData.images.length,
+      };
       setFormData((prev) => ({
         ...prev,
         images: [...prev.images, newImage],
       }));
+      resetImageForm();
+    } else {
+      alert("Please select an image file or provide a URL");
     }
+  };
 
-    // Reset form
+  const resetImageForm = () => {
+    setEditingImageIndex(null);
     setSelectedFile(null);
     setImageTitle("");
     setImageAlt("");
@@ -729,23 +775,19 @@ export default function AddEditProjectPage() {
                       <button
                         type="button"
                         onClick={addOrUpdateImage}
+                        disabled={uploadingImage}
                         style={styles.primaryButton}
                       >
-                        {editingImageIndex !== null
-                          ? "Update Image"
-                          : "Add Image"}
+                        {uploadingImage
+                          ? "Uploading..."
+                          : editingImageIndex !== null
+                            ? "Update Image"
+                            : "Add Image"}
                       </button>
                       {editingImageIndex !== null && (
                         <button
                           type="button"
-                          onClick={() => {
-                            setEditingImageIndex(null);
-                            setSelectedFile(null);
-                            setImageTitle("");
-                            setImageAlt("");
-                            setImageUrlInput("");
-                            setImagePreview(null);
-                          }}
+                          onClick={resetImageForm}
                           style={styles.secondaryButton}
                         >
                           Cancel Edit
