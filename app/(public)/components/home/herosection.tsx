@@ -171,7 +171,7 @@ export default function Hero() {
         >
           High-performance web applications & systems
           <br />
-          Architecting scalable, secure & design-rich Websites and Apps.
+        Architecting scalable, secure & design-rich Websites and Apps.
         </p>
 
         {/* CTA Buttons */}
