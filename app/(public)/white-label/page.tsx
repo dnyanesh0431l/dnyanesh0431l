@@ -1,6 +1,15 @@
 // app/white-label/page.tsx
 import Link from "next/link";
-import { FiCode, FiSmartphone, FiServer, FiShield, FiZap, FiUsers } from "react-icons/fi";
+import { 
+  FiCode, 
+  FiSmartphone, 
+  FiServer, 
+  FiShield, 
+  FiZap, 
+  FiUsers, 
+  FiCheckCircle,
+  FiArrowRight 
+} from "react-icons/fi";
 
 export default function WhiteLabelPage() {
   const services = [
@@ -63,7 +72,7 @@ export default function WhiteLabelPage() {
       {/* Why White Label Section */}
       <div style={styles.benefits}>
         <div style={styles.benefitsHeader}>
-          <span style={styles.tag}>Why Partner With Us</span>
+          <span style={{...styles.tag, background: "rgba(0, 229, 255, 0.1)", color: "var(--cyan)" }}>Why Partner With Us</span>
           <h2 style={styles.benefitsTitle}>Scale Your Agency Without Overhead</h2>
           <p style={styles.benefitsSubtitle}>
             Focus on sales and client relationships – we handle the entire development lifecycle.
@@ -72,23 +81,23 @@ export default function WhiteLabelPage() {
         <div style={styles.benefitsGrid}>
           <div style={styles.benefitCard}>
             <div style={styles.benefitIcon}>🚀</div>
-            <h3>100% White‑Label</h3>
-            <p>No credit or branding – your clients see only you.</p>
+            <h3 style={styles.benefitCardTitle}>100% White‑Label</h3>
+            <p style={styles.benefitCardText}>No credit or branding – your clients see only you.</p>
           </div>
           <div style={styles.benefitCard}>
             <div style={styles.benefitIcon}>⚡</div>
-            <h3>Fast Turnaround</h3>
-            <p>Dedicated teams that deliver on time, every time.</p>
+            <h3 style={styles.benefitCardTitle}>Fast Turnaround</h3>
+            <p style={styles.benefitCardText}>Dedicated teams that deliver on time, every time.</p>
           </div>
           <div style={styles.benefitCard}>
             <div style={styles.benefitIcon}>🔒</div>
-            <h3>NDA Protected</h3>
-            <p>Full confidentiality and non‑disclosure agreements.</p>
+            <h3 style={styles.benefitCardTitle}>NDA Protected</h3>
+            <p style={styles.benefitCardText}>Full confidentiality and non‑disclosure agreements.</p>
           </div>
           <div style={styles.benefitCard}>
             <div style={styles.benefitIcon}>💰</div>
-            <h3>Competitive Margins</h3>
-            <p>High‑quality work at rates that leave you healthy profit.</p>
+            <h3 style={styles.benefitCardTitle}>Competitive Margins</h3>
+            <p style={styles.benefitCardText}>High‑quality work at rates that leave you healthy profit.</p>
           </div>
         </div>
       </div>
@@ -96,7 +105,7 @@ export default function WhiteLabelPage() {
       {/* Services Grid */}
       <div style={styles.servicesSection}>
         <div style={styles.servicesHeader}>
-          <span style={styles.tag}>What You Can Offer</span>
+          <span style={{...styles.tag, background: "rgba(0, 229, 255, 0.15)", color: "var(--cyan)" }}>What You Can Offer</span>
           <h2 style={styles.servicesTitle}>Services You Can Resell Today</h2>
           <p style={styles.servicesSubtitle}>No technical expertise required – just close the deal, we do the rest.</p>
         </div>
@@ -116,29 +125,29 @@ export default function WhiteLabelPage() {
       {/* How It Works */}
       <div style={styles.howItWorks}>
         <div style={styles.howHeader}>
-          <span style={styles.tag}>Simple Process</span>
+          <span style={{...styles.tag, background: "rgba(0, 229, 255, 0.1)", color: "var(--cyan)" }}>Simple Process</span>
           <h2 style={styles.howTitle}>How White‑Label Works</h2>
         </div>
         <div style={styles.steps}>
           <div style={styles.step}>
             <div style={styles.stepNumber}>1</div>
-            <h3>You Pitch</h3>
-            <p>You sell our services to your client under your brand.</p>
+            <h3 style={styles.stepTitle}>You Pitch</h3>
+            <p style={styles.stepText}>You sell our services to your client under your brand.</p>
           </div>
           <div style={styles.step}>
             <div style={styles.stepNumber}>2</div>
-            <h3>We Build</h3>
-            <p>We develop the solution – you stay updated via white‑label dashboard.</p>
+            <h3 style={styles.stepTitle}>We Build</h3>
+            <p style={styles.stepText}>We develop the solution – you stay updated via white‑label dashboard.</p>
           </div>
           <div style={styles.step}>
             <div style={styles.stepNumber}>3</div>
-            <h3>You Deliver</h3>
-            <p>We hand over the finished product, you invoice your client.</p>
+            <h3 style={styles.stepTitle}>You Deliver</h3>
+            <p style={styles.stepText}>We hand over the finished product, you invoice your client.</p>
           </div>
           <div style={styles.step}>
             <div style={styles.stepNumber}>4</div>
-            <h3>We Support</h3>
-            <p>Ongoing maintenance and support – always behind the scenes.</p>
+            <h3 style={styles.stepTitle}>We Support</h3>
+            <p style={styles.stepText}>Ongoing maintenance and support – always behind the scenes.</p>
           </div>
         </div>
       </div>
@@ -146,9 +155,9 @@ export default function WhiteLabelPage() {
       {/* Final CTA */}
       <div style={styles.finalCta}>
         <div style={styles.finalCtaContent}>
-          <h2>Ready to Expand Your Agency?</h2>
-          <p>Let’s discuss how we can become your trusted development partner.</p>
-          <Link href="/contact" style={styles.finalCtaBtn}>Schedule a Call</Link>
+          <h2 style={styles.finalCtaTitle}>Ready to Expand Your Agency?</h2>
+          <p style={styles.finalCtaText}>Let’s discuss how we can become your trusted development partner.</p>
+          <Link href="/contact" style={styles.finalCtaBtn}>Schedule a Call <FiArrowRight style={{ marginLeft: "8px" }} /></Link>
         </div>
       </div>
     </div>
@@ -263,6 +272,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "40px",
     marginBottom: "16px",
   },
+  benefitCardTitle: {
+    fontSize: "20px",
+    fontWeight: 700,
+    fontFamily: "var(--font-heading)",
+    color: "var(--charcoal)",
+    marginBottom: "12px",
+  },
+  benefitCardText: {
+    fontSize: "14px",
+    color: "var(--charcoal-soft)",
+    lineHeight: 1.5,
+  },
   servicesSection: {
     padding: "60px 20px",
     background: "var(--charcoal-soft)",
@@ -295,7 +316,6 @@ const styles: Record<string, React.CSSProperties> = {
     background: "var(--charcoal)",
     padding: "28px",
     borderRadius: "var(--radius-lg)",
-    transition: "transform 0.2s",
   },
   serviceIcon: {
     display: "inline-flex",
@@ -356,6 +376,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: "bold",
     margin: "0 auto 16px",
   },
+  stepTitle: {
+    fontSize: "18px",
+    fontWeight: 700,
+    fontFamily: "var(--font-heading)",
+    color: "var(--charcoal)",
+    marginBottom: "8px",
+  },
+  stepText: {
+    fontSize: "14px",
+    color: "var(--charcoal-soft)",
+    lineHeight: 1.5,
+  },
   finalCta: {
     padding: "80px 20px",
     background: "var(--charcoal-soft)",
@@ -365,8 +397,22 @@ const styles: Record<string, React.CSSProperties> = {
     maxWidth: "600px",
     margin: "0 auto",
   },
+  finalCtaTitle: {
+    fontSize: "36px",
+    fontWeight: 700,
+    fontFamily: "var(--font-heading)",
+    color: "var(--snow)",
+    marginBottom: "16px",
+  },
+  finalCtaText: {
+    fontSize: "18px",
+    color: "var(--snow-soft)",
+    marginBottom: "32px",
+  },
   finalCtaBtn: {
-    display: "inline-block",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     background: "var(--cyan)",
     color: "var(--charcoal)",
     padding: "14px 32px",
@@ -374,6 +420,5 @@ const styles: Record<string, React.CSSProperties> = {
     textDecoration: "none",
     fontWeight: 600,
     fontSize: "16px",
-    marginTop: "24px",
   },
 };
