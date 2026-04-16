@@ -341,7 +341,7 @@ export default function Header() {
                   marginTop: "var(--space-xs)",
                 }}
               >
-                Freelancer · India
+                Software Product Engineer
               </div>
             </div>
           </Link>
