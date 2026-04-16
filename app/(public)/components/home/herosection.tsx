@@ -169,9 +169,9 @@ export default function Hero() {
             opacity: 0.95,
           }}
         >
-          Freelance Developer & Designer from India
+          High-performance web applications & systems
           <br />
-          Crafting digital experiences with code & creativity
+          Architecting scalable, secure & design-rich Websites and Apps.
         </p>
 
         {/* CTA Buttons */}
@@ -266,9 +266,7 @@ export default function Hero() {
               justifyContent: "center",
               opacity: 0.6,
             }}
-          >
-          
-          </div>
+          ></div>
         </div>
       </div>
 
