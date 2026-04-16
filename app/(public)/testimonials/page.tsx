@@ -24,7 +24,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/Econ.webp",
     text: "Dnyaneshwar built our research website with exceptional performance, achieving Lighthouse scores above 95. The platform is now fast, smooth, and significantly improved our visitor engagement and inquiry flow.",
     rating: 5,
-    date: "March 2025",
+    date: "December 2025",
   },
   {
     id: 2,
@@ -34,7 +34,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/Dhanroop.png",
     text: "We needed a website on an urgent timeline, and Dnyaneshwar delivered exactly as promised. Fast, reliable, and executed with complete professionalism.",
     rating: 5,
-    date: "February 2025",
+    date: "December 2025",
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/dhrubix.jpeg",
     text: "Dnyaneshwar handled our white-label development with precision and consistency. A dependable partner who delivers quality work aligned with business needs.",
     rating: 5,
-    date: "January 2025",
+    date: "March 2026",
   },
   {
     id: 4,
@@ -54,7 +54,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/HISSOL_Logo.png",
     text: "The internal ticketing system he built streamlined our operations completely. From ticket creation to lifecycle management, everything is structured, efficient, and easy to use.",
     rating: 5,
-    date: "December 2024",
+    date: "January 2026",
   },
   {
     id: 5,
@@ -64,7 +64,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/jandalogo.png",
     text: "Dnyaneshwar developed a clean and professional website that perfectly represents our business. It’s fast, modern, and gives us a strong online presence.",
     rating: 5,
-    date: "November 2024",
+    date: "January 2026",
   },
   {
     id: 6,
@@ -74,7 +74,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/mirabank.png",
     text: "He built a complete digital system for us, including an admin panel and staff app. It streamlined our loan operations, staff management, and financial tracking efficiently.",
     rating: 5,
-    date: "October 2024",
+    date: "March 2025",
   },
   {
     id: 7,
@@ -84,7 +84,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/metricwave.png",
     text: "Dnyaneshwar optimized our platform for performance and SEO, similar to our research projects. The results were noticeable in both speed and visibility.",
     rating: 5,
-    date: "September 2024",
+    date: "March 2026",
   },
   {
     id: 8,
@@ -94,7 +94,7 @@ const clientTestimonials: Testimonial[] = [
     logo: "/Clients/ssslon.png",
     text: "The booking system and website transformed our salon’s online presence. Appointments have doubled since launch.",
     rating: 5,
-    date: "August 2024",
+    date: "February 2026",
   },
 ];
 
