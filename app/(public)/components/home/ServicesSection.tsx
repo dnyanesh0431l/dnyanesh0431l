@@ -1,33 +1,39 @@
-import { FiCode, FiServer, FiSmartphone, FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiCode, FiServer, FiSmartphone } from "react-icons/fi";
 
 export default function ServicesSection() {
   const services = [
     {
       title: "Web Development",
       description: "Modern, responsive websites and web applications.",
-      outcome: "Increase conversions by 40% with lightning-fast, SEO-optimized sites.",
+      outcome:
+        "Increase conversions by 40% with lightning-fast, SEO-optimized sites.",
       icon: FiCode,
       color: "var(--cyan)",
       techs: ["Next.js", "React", "Node.js", "Tailwind CSS", "TypeScript"],
-      imageUrl: "https://i.pinimg.com/736x/51/b2/fe/51b2fee7367115957f29cb0add059017.jpg",
+      imageUrl:
+        "https://i.pinimg.com/736x/51/b2/fe/51b2fee7367115957f29cb0add059017.jpg",
     },
     {
       title: "App Development",
       description: "Native and cross-platform mobile apps for iOS and Android.",
-      outcome: "Engage users on the go with smooth, high-performance mobile experiences.",
+      outcome:
+        "Engage users on the go with smooth, high-performance mobile experiences.",
       icon: FiSmartphone,
       color: "#8b5cf6",
       techs: ["Flutter", "Dart"],
-      imageUrl: "https://i.pinimg.com/1200x/3f/60/31/3f6031b624a627c72d1d96c44b7c58be.jpg",
+      imageUrl:
+        "https://i.pinimg.com/1200x/3f/60/31/3f6031b624a627c72d1d96c44b7c58be.jpg",
     },
     {
       title: "Custom Software",
-      description: "Tailored software solutions to automate and scale your business.",
+      description:
+        "Tailored software solutions to automate and scale your business.",
       outcome: "Automate workflows, reduce costs, and scale effortlessly.",
       icon: FiServer,
       color: "var(--green)",
       techs: ["Node.js", "PostgreSQL", "Docker", "TypeScript"],
-      imageUrl: "https://i.pinimg.com/736x/32/e8/dc/32e8dce5be5caf38b526365132d273c2.jpg",
+      imageUrl:
+        "https://i.pinimg.com/736x/32/e8/dc/32e8dce5be5caf38b526365132d273c2.jpg",
     },
   ];
 
@@ -37,14 +43,20 @@ export default function ServicesSection() {
         <div style={styles.header}>
           <span style={styles.tag}>Services</span>
           <h2 style={styles.title}>What I Do</h2>
-          <p style={styles.subtitle}>Simple, scalable, and modern solutions.</p>
+          <p style={styles.subtitle}>
+            Focused on building scalable, production-ready systems.
+          </p>
         </div>
 
         <div style={styles.grid}>
           {services.map((service) => (
             <div key={service.title} style={styles.card}>
               <div style={styles.imageWrapper}>
-                <img src={service.imageUrl} alt={service.title} style={styles.image} />
+                <img
+                  src={service.imageUrl}
+                  alt={service.title}
+                  style={styles.image}
+                />
               </div>
               <div style={styles.content}>
                 <div style={styles.iconWrapper}>
@@ -69,7 +81,8 @@ export default function ServicesSection() {
 
         <div style={styles.ctaWrapper}>
           <a href="/testimonials" style={styles.ctaButton}>
-            See what my Clients Says <FiArrowRight style={{ marginLeft: "8px" }} />
+            See what my Clients Says{" "}
+            <FiArrowRight style={{ marginLeft: "8px" }} />
           </a>
         </div>
       </div>
