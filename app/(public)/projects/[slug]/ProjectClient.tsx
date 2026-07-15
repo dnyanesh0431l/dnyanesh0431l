@@ -1,8 +1,9 @@
 // app/projects/[slug]/ProjectClient.tsx
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
+import { Project } from "@/app/lib/projects";
+import Link from "next/link";
+import { useState } from "react";
 import {
   FiArrowLeft,
   FiCheck,
@@ -10,9 +11,8 @@ import {
   FiGithub,
   FiMaximize2,
   FiX,
-} from 'react-icons/fi';
-import { Project } from '@/app/lib/projects';
-import styles from './project.module.css';
+} from "react-icons/fi";
+import styles from "./project.module.css";
 
 interface ProjectClientProps {
   project: Project;
@@ -26,12 +26,12 @@ export default function ProjectClient({ project }: ProjectClientProps) {
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   const nextImage = () => {
@@ -62,10 +62,10 @@ export default function ProjectClient({ project }: ProjectClientProps) {
             <h1 className={styles.title}>{project.title}</h1>
             <p className={styles.description}>{project.shortDescription}</p>
 
-            {/* Technologies */}
+            {/* Technologies - with unique keys */}
             <div className={styles.techList}>
-              {project.technologies?.map((tech) => (
-                <span key={tech} className={styles.techBadge}>
+              {project.technologies?.map((tech, index) => (
+                <span key={`${tech}-${index}`} className={styles.techBadge}>
                   {tech}
                 </span>
               ))}
@@ -82,7 +82,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
                     rel="noopener noreferrer"
                     className={styles.linkBtn}
                   >
-                    {link.label === 'GitHub' ? (
+                    {link.label === "GitHub" ? (
                       <FiGithub size={14} />
                     ) : (
                       <FiExternalLink size={14} />
@@ -123,7 +123,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
                     className={`${styles.thumbnail} ${
-                      idx === selectedImage ? styles.thumbnailActive : ''
+                      idx === selectedImage ? styles.thumbnailActive : ""
                     }`}
                   >
                     <img
@@ -159,7 +159,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
             <div
               className={styles.fullDescription}
               dangerouslySetInnerHTML={{
-                __html: project.fullDescription?.replace(/\n/g, '<br/>') || '',
+                __html: project.fullDescription?.replace(/\n/g, "<br/>") || "",
               }}
             />
           </div>

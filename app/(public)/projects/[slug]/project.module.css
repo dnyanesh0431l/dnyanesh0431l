@@ -212,17 +212,20 @@
 }
 
 /* ----- ENHANCED RICH TEXT STYLES for fullDescription ----- */
+/* Make overview description pure black */
 .fullDescription {
   font-size: var(--text-base);
-  line-height: 1.7;
-  color: var(--charcoal);
+  line-height: 1.4;
+  color: #000;           /* changed from #333 */
   font-family: var(--font-body);
   text-align: justify;
 }
 
 .fullDescription p {
-  margin-bottom: var(--space-md);
+  /* margin-bottom: var(--space-md); */
   text-align: justify;
+  color: #000;           /* changed from #333 */
+
 }
 
 .fullDescription h1,
