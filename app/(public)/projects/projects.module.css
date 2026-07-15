@@ -1,7 +1,10 @@
 /* app/projects/projects.module.css */
+
 .container {
   min-height: 100vh;
   background: var(--snow);
+  padding-bottom: var(--space-lg);
+  padding-top: var(--space-lg);
 }
 
 .hero {
@@ -71,7 +74,9 @@
   background: var(--charcoal-soft);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   text-decoration: none;
   cursor: pointer;
 }
@@ -128,7 +133,7 @@
 }
 
 .cardContent {
-  padding: var(--space-md);
+  padding: var(--space-md); /* ← this controls inner spacing */
 }
 
 .cardTitle {
@@ -166,21 +171,36 @@
 .cardLinks {
   display: flex;
   gap: var(--space-md);
+  margin-top: var(--space-xs); /* small top margin if needed */
 }
 
+/* === Button that looks like a link === */
 .cardLinkIcon {
-  display: flex;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0; /* ← ensure no extra margin */
+  font: inherit;
+  cursor: pointer;
+
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: var(--text-xs);
   color: var(--cyan);
-  text-decoration: none;
   font-family: var(--font-body);
   transition: color 0.2s;
+  text-decoration: none; /* just in case */
 }
 
 .cardLinkIcon:hover {
   color: var(--green);
+}
+
+/* Accessibility focus ring */
+.cardLinkIcon:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
 }
 
 @keyframes spin {
