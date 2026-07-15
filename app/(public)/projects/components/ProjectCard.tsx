@@ -16,16 +16,13 @@ type Project = {
 };
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const handleExternalLinkClick = (url: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // prevent card navigation
+  const handleExternalLink = (url: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className={styles.projectCard} // 👈 your original class, works as before
-    >
+    <Link href={`/projects/${project.slug}`} className={styles.projectCard}>
       {project.images && project.images[0] && (
         <div className={styles.cardImage}>
           <img
@@ -43,26 +40,29 @@ export default function ProjectCard({ project }: { project: Project }) {
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{project.title}</h3>
         <p className={styles.cardDescription}>{project.shortDescription}</p>
+
         <div className={styles.techList}>
           {project.technologies?.slice(0, 3).map((tech) => (
             <span key={tech} className={styles.techBadge}>
               {tech}
             </span>
           ))}
-          {project.technologies?.length > 3 && (
+          {/* ✅ Fixed: properly check existence before using length */}
+          {project.technologies && project.technologies.length > 3 && (
             <span className={styles.techBadge}>
               +{project.technologies.length - 3}
             </span>
           )}
         </div>
+
         {project.links && project.links.length > 0 && (
           <div className={styles.cardLinks}>
             {project.links.slice(0, 2).map((link, idx) => (
               <button
                 key={idx}
                 type="button"
-                className={styles.cardLinkIcon} // 👈 re‑use the same CSS class
-                onClick={(e) => handleExternalLinkClick(link.url, e)}
+                className={styles.cardLinkIcon}
+                onClick={(e) => handleExternalLink(link.url, e)}
               >
                 {link.label === "GitHub" ? (
                   <FiGithub size={12} />
