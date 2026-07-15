@@ -626,6 +626,7 @@ export default function AboutPageClient() {
 
         {/* ── JOURNEY TIMELINE (PERFECT ON MOBILE) ── */}
         <section
+          id="journey"
           aria-label="My Journey"
           style={{
             position: "relative",
